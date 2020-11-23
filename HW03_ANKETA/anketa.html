@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        function textValid(b) {
+
+            while (true) {
+                a = prompt(b);
+
+                if (!isNaN(a) || a === '' || a === " ") {
+                    alert('Недопустимое значение. Введите снова.')
+                    true;
+                }
+                else return a;
+            }
+        }
+
+        function intValid(b) {
+
+            while (true) {
+                a = prompt(b);
+
+                if (isNaN(a) || a === '' || a === " " || a > 116) {
+                    alert('Недопустимое значение. Введите снова.')
+                    true;
+                }
+                else return a;
+            }
+        }
+
+
+
+        var name1 = textValid("Введите свое имя.");
+        var last_name = textValid("Введите свою фамилию.");
+        var fathers_name = textValid("Введите свое отчество.");
+        var age_years = parseInt(intValid("Сколько вам лет?"));
+        let gender = confirm("Нажмите \"ОК\" если вы мужского пола, \"Отмена\" если вы женского пола.");
+
+        (gender == true) ? gender = 'Мужской' : gender = 'Женский';
+
+        let pens_vozrast;
+
+        (gender == 'Мужской') ?
+            ((age_years <= 63) ? pens_vozrast = "Нет" : pens_vozrast = "Да") :
+            ((age_years <= 58) ? pens_vozrast = "Нет" : pens_vozrast = "Да");
+
+        console.log(typeof (age_years));
+
+        alert('ФИО: ' + last_name + " " + name1 + " " + fathers_name + '\nВозраст, лет: ' + age_years +
+            '\nВозраст, дней: ' + age_years * 365 + '\nЧерез 5 лет вам будет:' + (age_years + 5) +
+            '\nПол: ' + gender + '\nПенсионный возраст: ' + pens_vozrast);
+
+    </script>
+</body>
+
+</html>
