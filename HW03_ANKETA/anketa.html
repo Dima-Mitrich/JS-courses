@@ -28,7 +28,7 @@
             while (true) {
                 a = prompt(b);
 
-                if (isNaN(a) || a === '' || a === " " || a > 116) {
+                if (isNaN(a) || a === '' || a === " " || a > 116 || a === false || a === null) {
                     alert('Недопустимое значение. Введите снова.')
                     true;
                 }
