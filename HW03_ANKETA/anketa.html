@@ -44,16 +44,20 @@
         var ageYears = parseInt(intValid("Сколько вам лет?"));
         let genderChoice = confirm("Нажмите \"ОК\" если вы мужского пола, \"Отмена\" если вы женского пола.");
         let gender;
-        
-        (genderChoice == true) ? gender = 'Мужской' : gender = 'Женский';
-
         let pensVozrast;
 
-        pensVozrast = (genderChoice == true) ? ((ageYears <= 63) ? "Нет" : "Да") : ((ageYears <= 58) ? "Нет" : "Да");
+        if (genderChoice == true ) {
+            gender = 'Мужской';
+            pensVozrast = (ageYears <= 63) ? "Нет" : "Да";
+        }
+        else {
+            gender = 'Женский';
+            pensVozrast = (ageYears <= 58) ? "Нет" : "Да";
+        }
 
 
         alert('ФИО: ' + lastName + " " + name1 + " " + fathersName + '\nВозраст, лет: ' + ageYears +
-            '\nВозраст, дней: ' + ageYears * 365 + '\nЧерез 5 лет вам будет:' + (ageYears + 5) +
+            '\nВозраст, дней: ' + ageYears * 365 + '\nЧерез 5 лет вам будет: ' + (ageYears + 5) +
             '\nПол: ' + gender + '\nПенсионный возраст: ' + pensVozrast);
 
     </script>
