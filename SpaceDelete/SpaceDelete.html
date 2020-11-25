@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        let str = prompt("Vvedite stroku");
+        let space = " ";
+
+        function SpaceDelete(a, i) {
+
+            while (a.startsWith(i) || a.endsWith(i)) {
+
+                a = (a.startsWith(i)) ? a.replace(i, '') : a.slice(0, -1);
+
+            }
+            return a;
+        }
+
+        let result = SpaceDelete(str, space);
+
+        console.log("%%%" + result + "$$$");
+
+    </script>
+</body>
+
+</html>
