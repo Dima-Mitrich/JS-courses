@@ -14,13 +14,21 @@
         let space = " ";
 
         function SpaceDelete(a, i) {
+            
+            let beg = 0;
+            let end = 1;
 
-            while (a.startsWith(i) || a.endsWith(i)) {
+            while (a[beg] == i) {
+                beg++;
+            } 
 
-                a = (a.startsWith(i)) ? a.replace(i, '') : a.slice(0, -1);
-
+            while (a[a.length - end] == i) {
+                end++;
             }
+
+            a = a.substring(beg, a.length - end + 1);
             return a;
+
         }
 
         let result = SpaceDelete(str, space);
