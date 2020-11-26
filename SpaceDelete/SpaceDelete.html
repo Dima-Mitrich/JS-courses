@@ -14,21 +14,32 @@
         let space = " ";
 
         function SpaceDelete(a, i) {
-            
             let beg = 0;
             let end = 1;
 
             while (a[beg] == i) {
                 beg++;
-            } 
+            }
+
+            if (beg == a.length) {
+
+                console.log("Только пробелы");
+                return a = a.substring(beg);
+            }
+
 
             while (a[a.length - end] == i) {
                 end++;
             }
 
+            if (beg == 0 && end == 1) {
+                
+                console.log("Пробелов нет");
+                return a;
+            }
+
             a = a.substring(beg, a.length - end + 1);
             return a;
-
         }
 
         let result = SpaceDelete(str, space);
