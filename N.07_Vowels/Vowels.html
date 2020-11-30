@@ -57,19 +57,19 @@
 
 
         console.time("forSet");
-        for (let i = 0; i <= 100000; i++) {
+        for (let i = 0; i <= 1000000; i++) {
             countGlas(str);
         }
         console.timeEnd("forSet");
 
         console.time("forHash");
-        for (let i = 0; i <= 100000; i++) {
+        for (let i = 0; i <= 1000000; i++) {
             countGlas1(str);
         }
         console.timeEnd("forHash");
 
         console.time("forArray");
-        for (let i = 0; i <= 100000; i++) {
+        for (let i = 0; i <= 1000000; i++) {
             countGlas2(str);
         }
         console.timeEnd("forArray");
