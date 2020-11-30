@@ -8,21 +8,35 @@
 <body>
     <script>
         var str = prompt("vvedite stroku");
+        var glSet = new Set(["а", "е", "я", "о", "у", "ю", "ы", "и", "э", "е"]);
 
-        function countGlas(a) {
-            var glasArr = ["а", "е", "ё", "и", "о", "у", "ы", "э", "ю", "я"];
-            var n = 0;
+        function countGlas(a, set) {
+            let n = 0;
 
             for (let i = 0; i < a.length; i++) {
-                for(let j = 0; j < glasArr.length; j++) {
-                    if (a[i] == glasArr[j]) n++;
-                }
+                if (set.has(a[i])) n++;
+                else continue;
             }
-            
+
             return n;
         }
+        
 
-        console.log(countGlas(str));
+        var glHash = {'а':true, 'е':true,'я':true,'о':true,'у':true,'ю':true,'ы':true,'и':true,'э':true,'е':true, }
+
+        function countGlas1(a, hash) {
+            let n = 0;
+
+            for (let i = 0; i < a.length; i++) {
+                if (a[i] in hash) n++;
+                else continue;
+            }
+
+            return n;
+        }
+            
+        console.log(countGlas(str, glSet));
+        console.log(countGlas1(str, glHash));
     </script>
 </body>
 </html>
