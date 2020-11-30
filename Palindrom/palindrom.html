@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        var fraza = "Лидер Венере не вредил";
+
+        function palindrom(a) {
+            a = a.toLowerCase();
+            a = a.replace(/ /g,'');
+            a = a.replace(/,/g,'');
+            a = a.replace(/ё/g,'е');
+            a = a.replace(/ъ/g,'ь');
+            a = a.replace(".",'');
+            a = a.replace("?", '');
+            a = a.replace("!", '');
+            for (let i = 0; i < a.length; i++) {
+                if (a[i] != a[a.length - 1 - i]) return false;
+            }
+            
+            return true;
+        }
+
+        console.log(palindrom(fraza));
+        
+
+    </script>
+</body>
+</html>
