@@ -19,7 +19,7 @@
             a = a.replace(".",'');
             a = a.replace("?", '');
             a = a.replace("!", '');
-            for (let i = 0; i < a.length/2; i++) {
+            for (let i = 0; i < parseInt(a.length/2); i++) {
                 if (a[i] != a[a.length - 1 - i]) return false;
             }
             
@@ -27,6 +27,7 @@
         }
 
         console.log(palindrom(fraza));
+
         
 
     </script>
