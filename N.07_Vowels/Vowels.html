@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var str = prompt("vvedite stroku");
+
+        function countGlas(a) {
+            var glasArr = ["а", "е", "ё", "и", "о", "у", "ы", "э", "ю", "я"];
+            var n = 0;
+
+            for (let i = 0; i < a.length; i++) {
+                for(let j = 0; j < glasArr.length; j++) {
+                    if (a[i] == glasArr[j]) n++;
+                }
+            }
+            
+            return n;
+        }
+
+        console.log(countGlas(str));
+    </script>
+</body>
+</html>
