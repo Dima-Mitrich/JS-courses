@@ -8,7 +8,7 @@
 <body>
     <script>
 
-        var fraza = "Лидер Венере не вредил";
+        var fraza = "А лис, он умен крыса сыр к нему носила.";
 
         function palindrom(a) {
             a = a.toLowerCase();
@@ -19,7 +19,7 @@
             a = a.replace(".",'');
             a = a.replace("?", '');
             a = a.replace("!", '');
-            for (let i = 0; i < a.length; i++) {
+            for (let i = 0; i < a.length/2; i++) {
                 if (a[i] != a[a.length - 1 - i]) return false;
             }
             
