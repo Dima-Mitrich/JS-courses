@@ -12,12 +12,12 @@
         var str = prompt("vvedite stroku");
 
         function countGlas(a) {
+            a.toLowerCase();
             var n = 0;
-            var glSet = new Set(["а", "е", "я", "о", "у", "ю", "ы", "и", "э", "е"]);
+            var glSet = new Set(["а", "е", "я", "о", "у", "ю", "ы", "и", "э", "ё"]);
 
             for (let i = 0; i < a.length; i++) {
                 if (glSet.has(a[i])) n++;
-                else continue;
             }
 
             return n;
@@ -25,12 +25,12 @@
 
 
         function countGlas1(a) {
+            a.toLowerCase();
             var n = 0;
-            var glHash = { 'а': true, 'е': true, 'я': true, 'о': true, 'у': true, 'ю': true, 'ы': true, 'и': true, 'э': true, 'е': true }
+            var glHash = { 'а': true, 'е': true, 'я': true, 'о': true, 'у': true, 'ю': true, 'ы': true, 'и': true, 'э': true, 'ё': true }
 
             for (let i = 0; i < a.length; i++) {
                 if (a[i] in glHash) n++;
-                else continue;
             }
 
             return n;
@@ -38,13 +38,16 @@
 
 
         function countGlas2(a) {
+            a.toLowerCase();
             var n = 0;
-            var glArray = ["а", "е", "я", "о", "у", "ю", "ы", "и", "э", "е"];
+            var glArray = ["а", "е", "я", "о", "у", "ю", "ы", "и", "э", "ё"];
 
-            for (let i = 0; i < a.length; i++){
+            for (let i = 0; i < a.length; i++) {
                 for (let j = 0; j < glArray.length; j++) {
-                    if (a[i] == glArray[j]) n++;
-                    else continue;
+                    if (a[i] == glArray[j]) {
+                        n++;
+                        break;
+                    }
                 }
             }
 
