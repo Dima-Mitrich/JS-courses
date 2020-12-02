@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var fraza = "Муза! Ранясь шилом опыта, ты помолишься на разум.";
+        var fraza = change(fraza);
+
+        function change(a) {
+            a = a.toLowerCase();
+            a = a.replace(/ /g, '');
+            a = a.replace(/,/g, '');
+            a = a.replace(/ё/g, 'е');
+            a = a.replace(/ъ/g, 'ь');
+            a = a.replace(".", '');
+            a = a.replace("?", '');
+            a = a.replace("!", '');
+            return a;
+        }
+
+        function palindrom(a, i = 0) {
+            if (i == Math.trunc(a.length / 2)) return true;
+            else if (a[i] != a[a.length - 1 - i]) {
+                return false;
+            }
+            else return palindrom(a, i + 1);
+        }
+
+        console.log(palindrom(fraza));
+    </script>
+</body>
+
+</html>

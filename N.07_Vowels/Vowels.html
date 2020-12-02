@@ -12,7 +12,7 @@
         var str = prompt("vvedite stroku");
 
         function countGlas(a) {
-            a.toLowerCase();
+            a = a.toLowerCase();
             var n = 0;
             var glSet = new Set(["а", "е", "я", "о", "у", "ю", "ы", "и", "э", "ё"]);
 
@@ -25,7 +25,7 @@
 
 
         function countGlas1(a) {
-            a.toLowerCase();
+            a = a.toLowerCase();
             var n = 0;
             var glHash = { 'а': true, 'е': true, 'я': true, 'о': true, 'у': true, 'ю': true, 'ы': true, 'и': true, 'э': true, 'ё': true }
 
@@ -38,7 +38,7 @@
 
 
         function countGlas2(a) {
-            a.toLowerCase();
+            a = a.toLowerCase();
             var n = 0;
             var glArray = ["а", "е", "я", "о", "у", "ю", "ы", "и", "э", "ё"];
 
