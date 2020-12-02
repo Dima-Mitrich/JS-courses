@@ -9,31 +9,33 @@
 
 <body>
     <script>
+        "use strict";
 
-        var fraza = "Муза! Ранясь шилом опыта, ты помолишься на разум.";
-        var fraza = change(fraza);
+        var fraza = "Сани, плот и воз, зов и толп и нас.";
 
-        function change(a) {
-            a = a.toLowerCase();
-            a = a.replace(/ /g, '');
-            a = a.replace(/,/g, '');
-            a = a.replace(/ё/g, 'е');
-            a = a.replace(/ъ/g, 'ь');
-            a = a.replace(".", '');
-            a = a.replace("?", '');
-            a = a.replace("!", '');
-            return a;
-        }
+        fraza = fraza.toLowerCase();
+        fraza = fraza.replace(/ /g, '');
+        fraza = fraza.replace(/,/g, '');
+        fraza = fraza.replace(/ё/g, 'е');
+        fraza = fraza.replace(/ъ/g, 'ь');
+        fraza = fraza.replace(".", '');
+        fraza = fraza.replace("?", '');
+        fraza = fraza.replace("!", '');
 
-        function palindrom(a, i = 0) {
-            if (i == Math.trunc(a.length / 2)) return true;
-            else if (a[i] != a[a.length - 1 - i]) {
-                return false;
+
+        function palindrom1(a) {
+            
+            if (a.length < 2) return true;
+
+            if (a[0] == a[a.length - 1]) {
+                a = a.slice(1, a.length - 1);
             }
-            else return palindrom(a, i + 1);
+            else return false;
+
+            return palindrom1(a);
         }
 
-        console.log(palindrom(fraza));
+        console.log(palindrom1(fraza));
     </script>
 </body>
 
