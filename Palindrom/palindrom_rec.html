@@ -13,26 +13,26 @@
 
         var fraza = "Сани, плот и воз, зов и толп и нас.";
 
-        fraza = fraza.toLowerCase();
-        fraza = fraza.replace(/ /g, '');
-        fraza = fraza.replace(/,/g, '');
-        fraza = fraza.replace(/ё/g, 'е');
-        fraza = fraza.replace(/ъ/g, 'ь');
-        fraza = fraza.replace(".", '');
-        fraza = fraza.replace("?", '');
-        fraza = fraza.replace("!", '');
-
-
         function palindrom1(a) {
-            
+
+            a = a.toLowerCase();
+            a = a.replace(/ /g, '');
+            a = a.replace(/,/g, '');
+            a = a.replace(/ё/g, 'е');
+            a = a.replace(/ъ/g, 'ь');
+            a = a.replace(".", '');
+            a = a.replace("?", '');
+            a = a.replace("!", '');
+            console.log("work");
+
             if (a.length < 2) return true;
 
             if (a[0] == a[a.length - 1]) {
-                a = a.slice(1, a.length - 1);
+
+                return palindrom1(a.slice(1, a.length - 1));
+
             }
             else return false;
-
-            return palindrom1(a);
         }
 
         console.log(palindrom1(fraza));
