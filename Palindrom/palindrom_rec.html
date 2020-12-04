@@ -13,7 +13,7 @@
 
         var fraza = "Сани, плот и воз, зов и толп и нас.";
 
-        function palindrom1(a) {
+        function palindrom(a) {
 
             a = a.toLowerCase();
             a = a.replace(/ /g, '');
@@ -24,17 +24,19 @@
             a = a.replace("?", '');
             a = a.replace("!", '');
 
-            if (a.length < 2) return true;
+            function isPalindrom(a) {
+                if (a.length < 2) return true;
 
-            if (a[0] == a[a.length - 1]) {
-
-                return palindrom1(a.slice(1, a.length - 1));
-
+                if (a[0] == a[a.length - 1]) {
+                    return isPalindrom(a.slice(1, a.length - 1));
+                }
+                else return false;
             }
-            else return false;
+
+            return isPalindrom(a);
         }
 
-        console.log(palindrom1(fraza));
+        console.log(palindrom(fraza));
     </script>
 </body>
 
