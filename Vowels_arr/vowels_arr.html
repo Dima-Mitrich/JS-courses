@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var str = prompt("vvedite stroku");
+
+        function countForEach(a) {
+            var glArray = ["а", "е", "я", "о", "у", "ю", "ы", "и", "э", "ё"];
+            var countVow = 0;
+            a = a.toLowerCase();
+            a = a.split('');
+
+            a.forEach(function f(v) {
+                if (glArray.includes(v, 0)) countVow++;
+            });
+
+            return countVow;
+        }
+
+        function countFilter(a) {
+            a = a.toLowerCase();
+            a = a.split('');
+            var glSet = new Set(["а", "е", "я", "о", "у", "ю", "ы", "и", "э", "ё"]);
+            let result = a.filter(v => glSet.has(v));
+            return result.length;
+        }
+
+        function countReduce(a) {
+            a = a.toLowerCase();
+            a = a.split('');
+            var glSet = new Set(["а", "е", "я", "о", "у", "ю", "ы", "и", "э", "ё"]);
+            result = a.reduce((countVow, v) => glSet.has(v) ? countVow + 1 : countVow + 0, 0);
+            return result;
+        }
+
+        console.log(countForEach(str));
+        console.log(countFilter(str));
+        console.log(countReduce(str));
+    </script>
+</body>
+
+</html>
