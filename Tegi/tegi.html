@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var str = "Однажды в <студёную> зимнюю пору";
+
+
+        function wrapP(a, b) {
+            a = a.replace(/</g, '&lt;');
+            a = a.replace(/>/g, '&gt;');
+            a = a.replace(/"/g, '&quot;');
+            a = a.replace(/'/g, '&apos;');
+           // a = a.replace(/&/g, '&amp');
+            a = `<p>${a}</p>`;
+
+            if (b == undefined) {
+                return a;
+            }
+            else {
+                a = a.split('');
+                for (let key in b) {
+                    a.splice(2, 0, ` ${key}='${b[key]}'`);
+                }
+                a = a.join('');
+            }
+            return a;
+        }
+
+        console.log(wrapP(str));
+    </script>
+</body>
+
+</html>
