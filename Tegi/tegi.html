@@ -11,29 +11,30 @@
     <script>
         var str = "Однажды в <студёную> зимнюю пору";
 
+        function tagWrapper(tag, stroka, attr) {
 
-        function wrapP(a, b) {
-            a = a.replace(/</g, '&lt;');
-            a = a.replace(/>/g, '&gt;');
-            a = a.replace(/"/g, '&quot;');
-            a = a.replace(/'/g, '&apos;');
-           // a = a.replace(/&/g, '&amp');
-            a = `<p>${a}</p>`;
-
-            if (b == undefined) {
+            function mnemonHtml(a) {
+                a = a.replace(/&/g, '&amp');
+                a = a.replace(/</g, '&lt;');
+                a = a.replace(/>/g, '&gt;');
+                a = a.replace(/"/g, '&quot;');
+                a = a.replace(/'/g, '&apos;');
                 return a;
             }
-            else {
-                a = a.split('');
-                for (let key in b) {
-                    a.splice(2, 0, ` ${key}='${b[key]}'`);
+
+            let openTag = tag;
+
+            if (attr != null) {
+                for (let key in attr) {
+                    openTag += ` ${key} = '${mnemonHtml(attr[key])}'`;
                 }
-                a = a.join('');
             }
-            return a;
+
+            stroka = `<${openTag}>${mnemonHtml(stroka)}</${tag}>`;
+            return stroka;
         }
 
-        console.log(wrapP(str));
+        console.log(tagWrapper("p", str, { align: "center", width: "30", title: "M&M's" }));
     </script>
 </body>
 
