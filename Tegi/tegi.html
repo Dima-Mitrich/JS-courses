@@ -12,32 +12,31 @@
 
         function TagWrapper(tag) {
 
-            this.wrap = function (stroka, attr) {
+            function mnemonHtml(a) {
+                a = a.replace(/&/g, '&amp;');
+                a = a.replace(/</g, '&lt;');
+                a = a.replace(/>/g, '&gt;');
+                a = a.replace(/"/g, '&quot;');
+                a = a.replace(/'/g, '&apos;');
+                return a;
+            }
+            let openTag = tag;
 
-                function mnemonHtml(a) {
-                    a = a.replace(/&/g, '&amp');
-                    a = a.replace(/</g, '&lt;');
-                    a = a.replace(/>/g, '&gt;');
-                    a = a.replace(/"/g, '&quot;');
-                    a = a.replace(/'/g, '&apos;');
-                    return a;
-                }
-
-                let openTag = tag;
+            return function (str, attr) {
                 if (attr != null) {
                     for (let key in attr) {
                         openTag += ` ${key}='${mnemonHtml(attr[key])}'`;
                     }
                 }
-                return stroka = `<${openTag}>${mnemonHtml(stroka)}</${tag}>`;
+                return stroka = `<${openTag}>${mnemonHtml(str)}</${tag}>`;
             }
         }
 
         var wrapP = new TagWrapper("p");
         var wrapH1 = new TagWrapper("h1")
 
-        console.log(wrapP.wrap("Однажды в студёную зимнюю пору", { align: "center", width: "30", title: "M&M's" }));
-        console.log(wrapH1.wrap("Однажды в студёную зимнюю пору", { align: "center", width: "30", title: "M&M's" }));
+        console.log(wrapP("Однажды в студёную зимнюю пору", { align: "center", width: "30", title: "M&M's" }));
+        console.log(wrapH1("Однажды в студёную зимнюю пору", { align: "center", width: "30", title: "M&M's" }));
     </script>
 </body>
 
