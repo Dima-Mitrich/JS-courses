@@ -22,7 +22,7 @@
 
             if (Array.isArray(origObj)) copyObj = [];
             else if (typeof origObj == "object" && origObj) copyObj = {};
-            else copyObj = origObj;
+            else return copyObj = origObj;
 
             for (let key in origObj) {
                 if (typeof origObj[key] == "object" && origObj[key]) {
