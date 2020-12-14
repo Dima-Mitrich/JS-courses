@@ -20,136 +20,141 @@
 
             let copyObj;
 
-            if (Array.isArray(origObj)) copyObj = [];
-            else if (typeof origObj == "object" && origObj) copyObj = {};
-            else return copyObj = origObj;
+            if (Array.isArray(origObj)) {
+                copyObj = [];
 
-            for (let key in origObj) {
-                if (typeof origObj[key] == "object" && origObj[key]) {
-                    copyObj[key] = deepCopy(origObj[key]);
-                }
-                else {
-                    copyObj[key] = origObj[key];
+                for (let i = 0; i < origObj.length; i++) {
+
+                    if (typeof origObj[i] == "object" && origObj[i]) {
+                        copyObj[i] = deepCopy(origObj[i]);
+                    }
+                    else {
+                        copyObj[i] = origObj[i];
+                    }
                 }
             }
+            else if (typeof origObj == "object" && origObj) {
+                copyObj = {};
+
+                for (let key in origObj) {
+
+                    if (typeof origObj[key] == "object" && origObj[key]) {
+                        copyObj[key] = deepCopy(origObj[key]);
+                    }
+                    else {
+                        copyObj[key] = origObj[key];
+                    }
+                }
+            }
+            else return copyObj = origObj;
 
             return copyObj;
         }
 
         function deepCopyTest1(h1, h2) {
-            console.log('h1 === h2');
-            console.log((h1 === h2) ? 'Failed' : 'OK');
+            console.log('TEST: h1 === h2');
+            console.log((h1 === h2) ? 'Failed' : 'Passed');
 
-            console.log('h1.a === h2.a');
-            console.log((h1.a === h2.a) ? 'OK' : 'Failed');
+            console.log('TEST: h1.a === h2.a');
+            console.log((h1.a === h2.a) ? 'Passed' : 'Failed');
 
-            console.log('h1.b === h2.b');
-            console.log((h1.b === h2.b) ? 'Failed' : 'OK');
+            console.log('TEST: h1.b === h2.b');
+            console.log((h1.b === h2.b) ? 'Failed' : 'Passed');
 
-            console.log('h1.b.b1 === h2.b.b1');
-            console.log((h1.b.b1 === h2.b.b1) ? 'OK' : 'Failed');
+            console.log('TEST: h1.b.b1 === h2.b.b1');
+            console.log((h1.b.b1 === h2.b.b1) ? 'Passed' : 'Failed');
 
-            console.log('h1.c === h2.c');
-            console.log((h1.c === h2.c) ? 'Failed' : 'OK');
+            console.log('TEST: h1.c === h2.c');
+            console.log((h1.c === h2.c) ? 'Failed' : 'Passed');
 
-            console.log('h1.c[0] === h2.c[0]');
-            console.log((h1.c[0] === h2.c[0]) ? 'OK' : 'Failed');
+            console.log('TEST: h1.c[0] === h2.c[0]');
+            console.log((h1.c[0] === h2.c[0]) ? 'Passed' : 'Failed');
 
-            console.log('h1.d === h2.d');
-            console.log((h1.d === h2.d) ? 'OK' : 'Failed');
+            console.log('TEST: h1.d === h2.d');
+            console.log((h1.d === h2.d) ? 'Passed' : 'Failed');
 
-            console.log('h1.e === h2.e');
-            console.log((h1.e === h2.e) ? 'OK' : 'Failed');
+            console.log('TEST: h1.e === h2.e');
+            console.log((h1.e === h2.e) ? 'Passed' : 'Failed');
 
-            console.log('isNaN(h2.f)');
-            console.log((isNaN(h2.f)) ? 'OK' : 'Failed');
+            console.log('TEST: isNaN(h2.f)');
+            console.log((isNaN(h2.f)) ? 'Passed' : 'Failed');
 
-            console.log('h2.c instanceof Array');
-            console.log((h2.c instanceof Array) ? 'OK' : 'Failed');
+            console.log('TEST: h2.c instanceof Array');
+            console.log((h2.c instanceof Array) ? 'Passed' : 'Failed');
         }
 
         function deepCopyTest2(a1, a2) {
-            console.log('a1 === a2');
-            console.log((a1 === a2) ? 'Failed' : 'OK');
+            console.log('TEST: a1 === a2');
+            console.log((a1 === a2) ? 'Failed' : 'Passed');
 
-            console.log('typeof(a2) === typeof(a1)');
-            console.log((typeof (a2) === typeof (a1)) ? 'OK' : 'Failed');
+            console.log('TEST: typeof(a2) === typeof(a1)');
+            console.log((typeof (a2) === typeof (a1)) ? 'Passed' : 'Failed');
 
-            console.log('a1[0] === a2[0]');
-            console.log((a1[0] === a2[0]) ? 'OK' : 'Failed');
+            console.log('TEST: a1[0] === a2[0]');
+            console.log((a1[0] === a2[0]) ? 'Passed' : 'Failed');
 
-            console.log('a1[1] === a2[1]');
-            console.log((a1[1] === a2[1]) ? 'Failed' : 'OK');
+            console.log('TEST: a1[1] === a2[1]');
+            console.log((a1[1] === a2[1]) ? 'Failed' : 'Passed');
 
-            console.log('a1[1].b1 === a2[1].b1');
-            console.log((a1[1].b1 === a1[1].b1) ? 'OK' : 'Failed');
+            console.log('TEST: a1[1].b1 === a2[1].b1');
+            console.log((a1[1].b1 === a1[1].b1) ? 'Passed' : 'Failed');
 
-            console.log('a1[2] === a2[2]');
-            console.log((a1[2] === a2[2]) ? 'Failed' : 'OK');
+            console.log('TEST: a1[2] === a2[2]');
+            console.log((a1[2] === a2[2]) ? 'Failed' : 'Passed');
 
-            console.log('a1[2][0] === a2[2][0]');
-            console.log((a1[2][0] === a2[2][0]) ? 'OK' : 'Failed');
+            console.log('TEST: a1[2][0] === a2[2][0]');
+            console.log((a1[2][0] === a2[2][0]) ? 'Passed' : 'Failed');
 
-            console.log('a1[3] === a2[3]');
-            console.log((a1[3] === a2[3]) ? 'OK' : 'Failed');
+            console.log('TEST: a1[3] === a2[3]');
+            console.log((a1[3] === a2[3]) ? 'Passed' : 'Failed');
 
-            console.log('a1[4] === a2[4]');
-            console.log((a1[4] === a2[4]) ? 'OK' : 'Failed');
+            console.log('TEST: a1[4] === a2[4]');
+            console.log((a1[4] === a2[4]) ? 'Passed' : 'Failed');
 
-            console.log('isNaN(a2[5])');
-            console.log((isNaN(a2[5])) ? 'OK' : 'Failed');
+            console.log('TEST: isNaN(a2[5])');
+            console.log((isNaN(a2[5])) ? 'Passed' : 'Failed');
 
-            console.log('a2[2] instanceof Array');
-            console.log((a2[2] instanceof Array) ? 'OK' : 'Failed');
+            console.log('TEST: a2[2] instanceof Array');
+            console.log((a2[2] instanceof Array) ? 'Passed' : 'Failed');
         }
 
         function deepCopyTest3(v1, v2) {
-            console.log('typeof(v1) === typeof(v2)');
-            console.log((typeof (v1) === typeof (v2)) ? 'OK' : 'Failed');
+            console.log('TEST: typeof(v1) === typeof(v2)');
+            console.log((typeof (v1) === typeof (v2)) ? 'Passed' : 'Failed');
 
-            console.log('v1 === v2');
-            console.log((v1 === v2) ? 'OK' : 'Failed');
+            console.log('TEST: v1 === v2');
+            console.log((v1 === v2) ? 'Passed' : 'Failed');
         }
 
         function deepCopyTest4(n1, n2) {
-            console.log('typeof(v1) === typeof(v2)');
-            console.log((typeof (v1) === typeof (v2)) ? 'OK' : 'Failed');
+            console.log('TEST: typeof(v1) === typeof(v2)');
+            console.log((typeof (v1) === typeof (v2)) ? 'Passed' : 'Failed');
 
-            console.log('isNaN(n2)');
-            console.log((isNaN(n2)) ? 'OK' : 'Failed');
+            console.log('TEST: isNaN(n2)');
+            console.log((isNaN(n2)) ? 'Passed' : 'Failed');
         }
 
         let h2 = deepCopy(h1);
-        console.log(h1);
-        console.log(h2);
         deepCopyTest1(h1, h2);
 
         console.log('-----------------------------------------------------------------------------------');
 
         let a2 = deepCopy(a1);
-        console.log(a1);
-        console.log(a2);
         deepCopyTest2(a1, a2);
 
         console.log('-----------------------------------------------------------------------------------');
 
         let v2 = deepCopy(v1);
-        console.log(v1);
-        console.log(v2);
         deepCopyTest3(v1, v2);
 
         console.log('-----------------------------------------------------------------------------------');
 
         let z2 = deepCopy(z1);
-        console.log(z1);
-        console.log(z2);
         deepCopyTest3(z1, z2);
 
         console.log('-----------------------------------------------------------------------------------');
 
         let n2 = deepCopy(n1);
-        console.log(n1);
-        console.log(n2);
         deepCopyTest4(n1, n2);
 
     </script>
