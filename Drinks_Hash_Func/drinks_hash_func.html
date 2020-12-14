@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <input type="button" id="addDrink" value="Добавить напиток">;
+    <input type="button" id="showDrink" value="Найти напиток">;
+    <input type="button" id="deleteDrink" value="Удалить напиток">;
+    <input type="button" id="listDrinks" value="Показать напитки">;
+
+    <script>
+        function HashStorageFunc() {
+            let self = this;
+
+            self.bar = {};
+
+            self.addValue = function (key, value) {
+                self.bar[key] = value;
+            }
+
+            self.getValue = function (key) {
+                return self.bar[key];
+            }
+
+            self.deleteValue = function (key) {
+                delete self.bar[key];
+            }
+
+            self.getKeys = function () {
+                let arrKeys = [];
+
+                for (let key in self.bar) {
+                    arrKeys.push(key);
+                }
+                return arrKeys;
+            }
+        }
+
+        let drinkStorage = new HashStorageFunc();
+
+
+        addDrink.onclick = function () {
+
+            function createName() {
+                return prompt("Введите имя напитка").toLowerCase();
+            }
+
+            function createInfo() {
+                let drinkInfo = {};
+                drinkInfo.alko = confirm("Алкогольный?");
+                drinkInfo.ingr = {};
+
+                let i = 0;
+                do {
+                    let ingrName = prompt("Введите название ингридиента");
+                    let ingrSize = prompt("Введите количество");
+                    drinkInfo.ingr[ingrName] = ingrSize;
+                    i++;
+                } while (confirm("Добавить ингридиент?") || i == 7);
+
+                drinkInfo.mixed = confirm("Смешать?");
+                return drinkInfo;
+            }
+
+            drinkStorage.addValue(createName(), createInfo());
+        }
+
+
+        showDrink.onclick = function () {
+            let name = prompt("Какой напиток вы ищите?").toLowerCase();
+            let drink = drinkStorage.getValue(name)
+            console.log(drink);
+        }
+
+
+
+        deleteDrink.onclick = function () {
+            let name = prompt("Какой напиток удалить?");
+            drinkStorage.deleteValue(name);
+        }
+
+
+        listDrinks.onclick = function () {
+
+            let arr = drinkStorage.getKeys();
+            for (let i = 0; i < arr.length; i++) {
+                console.log(arr[i]);
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
