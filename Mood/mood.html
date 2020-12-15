@@ -21,14 +21,13 @@
 
             console.log('цветов: ' + colorsCount);
             for (var i = 1; i <= colorsCount; i++) {
-                var n = randomDiap(1, 7);
-
-                if (!(n in repeatColor)) {
-                    repeatColor[n] = true;
-                    var colorName = colors[n];
-                    console.log(colorName);
-                } 
-                else i--;
+                do {
+                    var n = randomDiap(1, 7);
+                }
+                while (n in repeatColor);
+                repeatColor[n] = true;
+                var colorName = colors[n];
+                console.log(colorName);
             }
         }
 
