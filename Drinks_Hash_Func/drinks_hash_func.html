@@ -74,8 +74,16 @@
 
         showDrink.onclick = function () {
             let name = prompt("Какой напиток вы ищите?").toLowerCase();
-            let drink = drinkStorage.getValue(name)
-            console.log(drink);
+            let drink = drinkStorage.getValue(name);
+            if (name in drinkStorage.bar) {
+                console.log(`Название: ${name}\nАлкогольный: ${(drink.alko) ? "Да" : "Нет"}\nРецепт:`);
+                for (let key in drink.ingr) {
+                    console.log(`  ${key}: ${drink.ingr[key]};`);
+                }
+                console.log(`Смешать: ${(drink.mixed) ? "Да" : "Нет"}`);
+            } else {
+                console.log("Такого напитка нет");
+            }
         }
 
 
