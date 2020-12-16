@@ -18,27 +18,27 @@
         function HashStorageFunc() {
             let self = this;
 
-            self.storage = {};
+            storage = {};
 
             self.addValue = function (key, value) {
-                self.storage[key] = value;
+                storage[key] = value;
             }
 
             self.getValue = function (key) {
-                return self.storage[key];
+                return storage[key];
             }
 
             self.deleteValue = function (key) {
-                if (key in self.storage) {
-                    delete self.storage[key];
+                if (key in storage) {
+                    delete storage[key];
                     return true;
-                }
+                } else return false;
             }
 
             self.getKeys = function () {
                 let arrKeys = [];
 
-                for (let key in self.storage) {
+                for (let key in storage) {
                     arrKeys.push(key);
                 }
                 return arrKeys;
@@ -78,7 +78,7 @@
         showDrink.onclick = function () {
             let name = prompt("Какой напиток вы ищите?").toLowerCase();
             let drink = drinkStorage.getValue(name);
-            if (name in drinkStorage.storage) {
+            if (drink) {
                 console.log(`Название: ${name}\nАлкогольный: ${(drink.alko) ? "Да" : "Нет"}\nРецепт:`);
                 for (let key in drink.ingr) {
                     console.log(`  ${key}: ${drink.ingr[key]};`);
