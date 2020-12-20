@@ -50,65 +50,91 @@
 
                 if (!(deepComp(a, b))) return false;
             }
+            else if (Number.isNaN(volOne) && Number.isNaN(volTwo)) {
+                return true;
+            }
             else {
                 return volOne === volTwo;
             }
             return true;
         }
 
-        console.log("Тест H1 === H2:")
+        console.log("Тест H1 === H2:");
         console.log((deepComp(H1, H2)) ? "Пройден" : "Не Пройден");
 
-        console.log("Тест H1 === H3:")
+        console.log("Тест H1 === H3:");
         console.log((deepComp(H1, H3)) ? "Не Пройден" : "Пройден");
 
-        console.log("Тест H1 === H4:")
+        console.log("Тест H1 === H4:");
         console.log((deepComp(H1, H4)) ? "Не Пройден" : "Пройден");
 
-        console.log("Тест H1 === H5:")
+        console.log("Тест H1 === H5:");
         console.log((deepComp(H1, H5)) ? "Не Пройден" : "Пройден");
 
-        console.log("Тест H6 === H7:")
+        console.log("Тест H6 === H7:");
         console.log((deepComp(H6, H7)) ? "Пройден" : "Не Пройден");
 
-        console.log("Тест H8 === H9:")
+        console.log("Тест H8 === H9:");
         console.log((deepComp(H8, H9)) ? "Не Пройден" : "Пройден");
 
-        console.log("Тест H8 === H10:")
+        console.log("Тест H8 === H10:");
         console.log((deepComp(H8, H10)) ? "Не Пройден" : "Пройден");
 
-        console.log("Тест null === H10:")
+        console.log("Тест null === H10:");
         console.log((deepComp(null, H10)) ? "Не Пройден" : "Пройден");
 
-        console.log("Тест H10 === null:")
+        console.log("Тест H10 === null:");
         console.log((deepComp(H10, null)) ? "Не Пройден" : "Пройден");
 
-        console.log("Тест null === null:")
+        console.log("Тест null === null:");
         console.log((deepComp(null, null)) ? "Пройден" : "Не Пройден");
 
-        console.log("Тест null === undefined:")
+        console.log("Тест null === undefined:");
         console.log((deepComp(null, undefined)) ? "Не Пройден" : "Пройден");
 
-        console.log('Тест "5" === 5:')
+        console.log('Тест "5" === 5:');
         console.log((deepComp("5", 5)) ? "Не Пройден" : "Пройден");
 
-        console.log("Тест 5 === H1:")
+        console.log("Тест 5 === H1:");
         console.log((deepComp(5, H1)) ? "Не Пройден" : "Пройден");
-        
-        console.log("Тест A1 === H1:")
+
+        console.log("Тест A1 === H1:");
         console.log((deepComp(A1, H1)) ? "Не Пройден" : "Пройден");
 
-        console.log("Тест A2 === A3:")
+        console.log("Тест A2 === A3:");
         console.log((deepComp(A2, A3)) ? "Не Пройден" : "Пройден");
 
-        console.log("Тест { a: 5, b: undefined } === { a: 5, c: undefined }:")
+        console.log("Тест { a: 5, b: undefined } === { a: 5, c: undefined }:");
         console.log((deepComp({ a: 5, b: undefined }, { a: 5, c: undefined })) ? "Не Пройден" : "Пройден");
 
-        console.log("Тест [5, 7] === { 0: 5, 1: 7 }:")
+        console.log("Тест [5, 7] === { 0: 5, 1: 7 }:");
         console.log((deepComp([5, 7], { 0: 5, 1: 7 })) ? "Не Пройден" : "Пройден");
 
-        console.log('Тест "aaa" === "bbb":')
+        console.log('Тест "aaa" === "bbb":');
         console.log((deepComp("aaa", "bbb")) ? "Не Пройден" : "Пройден");
+
+        console.log("Тест NaN === NaN: ");
+        console.log((deepComp(Number.NaN, Number.NaN) ? "Пройден" : "Не Пройден"));
+
+        console.log('Тест {a:"5"} === {a: 5}: ');
+        console.log((deepComp({ a: "5" }, { a: 5 }) ? "Не Пройден" : "Пройден"));
+
+        let a = Object.entries(H1).sort();
+        let b = Object.entries(H2).sort();
+        let c = Object.entries(H3).sort();
+        let d = Object.entries(H4).sort();
+        let e = Object.entries(H5).sort();
+        let f = Object.entries(H6).sort();
+        let g = Object.entries(H7).sort();
+        
+        console.log("");
+        console.log(a);
+        console.log(b);
+        console.log(c);
+        console.log(d);
+        console.log(e);
+        console.log(f);
+        console.log(g);
 
     </script>
 </body>
