@@ -30,25 +30,22 @@
 
             if (Array.isArray(volOne) && Array.isArray(volTwo)) {
 
-                if (volOne.length === volTwo.length) {
+                if (!(volOne.length === volTwo.length)) return false;
 
-                    for (let i = 0; i < volOne.length; i++) {
-                        if (typeof volOne[i] === "object" && typeof volTwo[i] === "object") {
-
-                            if (!(deepComp(volOne[i], volTwo[i]))) return false;
-                        }
-                        else if (Number.isNaN(volOne[i]) && Number.isNaN(volTwo[i])) continue;
-
-                        else if (volOne[i] !== volTwo[i]) return false;
-                    }
-                } else return false;
+                for (let i = 0; i < volOne.length; i++) {
+                    if (!(deepComp(volOne[i], volTwo[i]))) return false;
+                }
             }
             else if (typeof volOne === "object" && typeof volTwo === "object" && volOne && volTwo && !Array.isArray(volOne) && !Array.isArray(volTwo)) {
 
-                let a = Object.entries(volOne).sort();
-                let b = Object.entries(volTwo).sort();
+                let keysOne = Object.keys(volOne);
+                let keysTwo = Object.keys(volTwo);
 
-                if (!(deepComp(a, b))) return false;
+                if (!(keysOne.length === keysTwo.length)) return false;
+
+                for (let key in volOne) {
+                    if (!(key in volTwo) || !(deepComp(volOne[key], volTwo[key]))) return false;
+                }
             }
             else if (Number.isNaN(volOne) && Number.isNaN(volTwo)) {
                 return true;
@@ -118,23 +115,6 @@
 
         console.log('Тест {a:"5"} === {a: 5}: ');
         console.log((deepComp({ a: "5" }, { a: 5 }) ? "Не Пройден" : "Пройден"));
-
-        let a = Object.entries(H1).sort();
-        let b = Object.entries(H2).sort();
-        let c = Object.entries(H3).sort();
-        let d = Object.entries(H4).sort();
-        let e = Object.entries(H5).sort();
-        let f = Object.entries(H6).sort();
-        let g = Object.entries(H7).sort();
-        
-        console.log("");
-        console.log(a);
-        console.log(b);
-        console.log(c);
-        console.log(d);
-        console.log(e);
-        console.log(f);
-        console.log(g);
 
     </script>
 </body>
