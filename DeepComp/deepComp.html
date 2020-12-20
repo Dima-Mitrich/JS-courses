@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        "use strict";
+
+        var H1 = { a: 5, b: { b1: 6, b2: 7 } };
+        var H2 = { b: { b1: 6, b2: 7 }, a: 5 };
+        var H3 = { a: 5, b: { b1: 6 } };
+        var H4 = { a: 5, b: { b1: 66, b2: 7 } };
+        var H5 = { a: 5, b: { b1: 6, b2: 7, b3: 8 } };
+        var H6 = { a: null, b: undefined, c: Number.NaN };
+        var H7 = { c: Number.NaN, b: undefined, a: null };
+        var H8 = { a: 5, b: 6 };
+        var H9 = { c: 5, d: 6 };
+        var H10 = { a: 5 };
+        var A1 = [5, 7];
+        var A2 = [5, 5, 7];
+        var A3 = [5, 8, 7];
+
+
+        function deepComp(volOne, volTwo) {
+
+            if (Array.isArray(volOne) && Array.isArray(volTwo)) {
+
+                if (volOne.length === volTwo.length) {
+
+                    for (let i = 0; i < volOne.length; i++) {
+                        if (typeof volOne[i] === "object" && typeof volTwo[i] === "object") {
+
+                            if (!(deepComp(volOne[i], volTwo[i]))) return false;
+                        }
+                        else if (Number.isNaN(volOne[i]) && Number.isNaN(volTwo[i])) continue;
+
+                        else if (volOne[i] !== volTwo[i]) return false;
+                    }
+                } else return false;
+            }
+            else if (typeof volOne === "object" && typeof volTwo === "object" && volOne && volTwo && !Array.isArray(volOne) && !Array.isArray(volTwo)) {
+
+                let a = Object.entries(volOne).sort();
+                let b = Object.entries(volTwo).sort();
+
+                if (!(deepComp(a, b))) return false;
+            }
+            else {
+                return volOne === volTwo;
+            }
+            return true;
+        }
+
+        console.log("Тест H1 === H2:")
+        console.log((deepComp(H1, H2)) ? "Пройден" : "Не Пройден");
+
+        console.log("Тест H1 === H3:")
+        console.log((deepComp(H1, H3)) ? "Не Пройден" : "Пройден");
+
+        console.log("Тест H1 === H4:")
+        console.log((deepComp(H1, H4)) ? "Не Пройден" : "Пройден");
+
+        console.log("Тест H1 === H5:")
+        console.log((deepComp(H1, H5)) ? "Не Пройден" : "Пройден");
+
+        console.log("Тест H6 === H7:")
+        console.log((deepComp(H6, H7)) ? "Пройден" : "Не Пройден");
+
+        console.log("Тест H8 === H9:")
+        console.log((deepComp(H8, H9)) ? "Не Пройден" : "Пройден");
+
+        console.log("Тест H8 === H10:")
+        console.log((deepComp(H8, H10)) ? "Не Пройден" : "Пройден");
+
+        console.log("Тест null === H10:")
+        console.log((deepComp(null, H10)) ? "Не Пройден" : "Пройден");
+
+        console.log("Тест H10 === null:")
+        console.log((deepComp(H10, null)) ? "Не Пройден" : "Пройден");
+
+        console.log("Тест null === null:")
+        console.log((deepComp(null, null)) ? "Пройден" : "Не Пройден");
+
+        console.log("Тест null === undefined:")
+        console.log((deepComp(null, undefined)) ? "Не Пройден" : "Пройден");
+
+        console.log('Тест "5" === 5:')
+        console.log((deepComp("5", 5)) ? "Не Пройден" : "Пройден");
+
+        console.log("Тест 5 === H1:")
+        console.log((deepComp(5, H1)) ? "Не Пройден" : "Пройден");
+        
+        console.log("Тест A1 === H1:")
+        console.log((deepComp(A1, H1)) ? "Не Пройден" : "Пройден");
+
+        console.log("Тест A2 === A3:")
+        console.log((deepComp(A2, A3)) ? "Не Пройден" : "Пройден");
+
+        console.log("Тест { a: 5, b: undefined } === { a: 5, c: undefined }:")
+        console.log((deepComp({ a: 5, b: undefined }, { a: 5, c: undefined })) ? "Не Пройден" : "Пройден");
+
+        console.log("Тест [5, 7] === { 0: 5, 1: 7 }:")
+        console.log((deepComp([5, 7], { 0: 5, 1: 7 })) ? "Не Пройден" : "Пройден");
+
+        console.log('Тест "aaa" === "bbb":')
+        console.log((deepComp("aaa", "bbb")) ? "Не Пройден" : "Пройден");
+
+    </script>
+</body>
+
+</html>
