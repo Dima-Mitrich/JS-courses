@@ -10,15 +10,15 @@
 <body>
     <script>
 
-        let exp = "((3+2)*2)-3";
+        let exp = prompt("Введите выражение");
 
         function sum(exp) {
 
             while (exp.includes("(")) {
                 let open = exp.indexOf("(");
-                let close = exp.indexOf(")");
+                let close = exp.lastIndexOf(")");
 
-                let res = exp.substring(open + 1, close + 1);
+                let res = exp.substring(open + 1, close);
                 res = sum(res);
 
                 let arr22 = exp.split('');
@@ -44,9 +44,9 @@
                 }
             }
 
-           /* for (let i = 0; i < arr2.length; i++) {
-                if (arr2[i] == ".") arr2.splice(i, 1);
-            }*/
+            /* for (let i = 0; i < arr2.length; i++) {
+                 if (arr2[i] == ".") arr2.splice(i, 1);
+             }*/
 
             while (arr2.includes("*") || arr2.includes("/")) {
                 for (let i = 0; i < arr2.length; i++) {
@@ -71,8 +71,6 @@
                     }
                 }
             }
-
-            console.log(arr1);
 
             let result = arr1.reduce((s, c) => s + c);
             return result;
