@@ -10,75 +10,102 @@
 <body>
     <script>
 
-        let exp = "((3+2)*2)-3";
+        "use strict";
+
+        let exp = prompt('Введите пример');
+        let exp1 = "3*(2+3*(4+1))+2*(5+1)";
+        let exp2 = "3*(2+3*(4+1))+2*(5+1)+44/2/3";
+        let exp3 = "3.4*(2.1+3.5*(4.5+1))+2*(5+1)";
+
 
         function sum(exp) {
 
-            while (exp.includes("(")) {
-                let open = exp.indexOf("(");
-                let close = exp.indexOf(")");
+            //функция для получения выражения в самых глубоких скобках
+            function parser(exp) {
 
-                let res = exp.substring(open + 1, close + 1);
-                res = sum(res);
+                if (exp.includes('(')) {
 
-                let arr22 = exp.split('');
-                arr22.splice(open, close + 1, res);
+                    let start = exp.indexOf('(');
+                    let counter1 = 0;
+                    let counter2 = 0;
 
-                exp = arr22.join('');
+                    for (let i = 0; i < exp.length; i++) {
+                        if (exp[i] == '(') {
+                            counter1++;
+                        }
+                        if (exp[i] == ')') {
+                            counter2++;
+                        }
+                        if (counter1 == counter2 && counter1 != 0) {
+                            return parser(exp.slice(start + 1, i));
+                        }
+                    }
+                }
+                return exp;
             }
 
+            //цикл для замены выражений в скобках на значение получаемое внутри этих скобок
+            while (exp.includes('(')) {
+                let inBkt = parser(exp);                     //получаем выражение в скобках
+                let withBkt = `(${inBkt})`;                  //возвращаем выражению скобки для поиска в строке
+                exp = exp.replace(withBkt, sum(inBkt));      //замена
+            }
+
+            //получение двух массивов: опреандов и операторов
             let reg = /[\+ \* \- \/]/;
             let reg1 = /\d/;
 
-            let arr1 = exp.split(reg);
-            let arr2 = exp.split(reg1);
+            let arrNumbers = exp.split(reg);
+            let arrOperators = exp.split(reg1);
 
-            for (let i = 0; i < arr1.length; i++) {
-                arr1[i] = parseFloat(arr1[i]);
+            for (let i = 0; i < arrNumbers.length; i++) {
+                arrNumbers[i] = parseFloat(arrNumbers[i]);
             }
 
-            for (let i = 0; i < arr2.length; i++) {
-                if (!arr2[i] || arr2[i] == '.') {
-                    arr2.splice(i, 1);
+            //убираем все лишнее из массива операторов
+            for (let i = 0; i < arrOperators.length; i++) {
+                if (!arrOperators[i] || arrOperators[i] == '.') {
+                    arrOperators.splice(i, 1);
                     i--;
                 }
             }
 
-           /* for (let i = 0; i < arr2.length; i++) {
-                if (arr2[i] == ".") arr2.splice(i, 1);
-            }*/
-
-            while (arr2.includes("*") || arr2.includes("/")) {
-                for (let i = 0; i < arr2.length; i++) {
-                    if (arr2[i] == "*") {
-                        let z = arr1[i] * arr1[i + 1];
-                        arr1.splice(i, 2, z);
-                        arr2.splice(i, 1);
-                    } else if (arr2[i] == "/") {
-                        let z = arr1[i] / arr1[i + 1];
-                        arr1.splice(i, 2, z);
-                        arr2.splice(i, 1);
+            //вычисления 
+            while (arrOperators.includes("*") || arrOperators.includes("/")) {
+                for (let i = 0; i < arrOperators.length; i++) {
+                    if (arrOperators[i] == "*") {
+                        let z = arrNumbers[i] * arrNumbers[i + 1];
+                        arrNumbers.splice(i, 2, z);
+                        arrOperators.splice(i, 1);
+                    } else if (arrOperators[i] == "/") {
+                        let z = arrNumbers[i] / arrNumbers[i + 1];
+                        arrNumbers.splice(i, 2, z);
+                        arrOperators.splice(i, 1);
                     }
                 }
             }
 
-            while (arr2.includes("-")) {
-                for (let i = 0; i < arr2.length; i++) {
-                    if (arr2[i] == "-") {
-                        let z = 0 - arr1[i + 1];
-                        arr1.splice(i + 1, 1, z);
-                        arr2.splice(i, 1);
+            while (arrOperators.includes("-")) {
+                for (let i = 0; i < arrOperators.length; i++) {
+                    if (arrOperators[i] == "-") {
+                        let z = 0 - arrNumbers[i + 1];
+                        arrNumbers.splice(i + 1, 1, z);
+                        arrOperators.splice(i, 1);
                     }
                 }
             }
 
-            console.log(arr1);
-
-            let result = arr1.reduce((s, c) => s + c);
+            let result = arrNumbers.reduce((s, c) => s + c);
             return result;
         }
 
+        console.log('Ваш пример:');
         console.log(`${exp} = ${sum(exp)}`);
+        
+        console.log('Другие примеры:');
+        console.log(`${exp1} = ${sum(exp1)}`);
+        console.log(`${exp2} = ${sum(exp2)}`);
+        console.log(`${exp3} = ${sum(exp3)}`);
 
     </script>
 </body>
