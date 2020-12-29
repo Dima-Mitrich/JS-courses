@@ -24,11 +24,9 @@
             function parser(exp) {
 
                 if (exp.includes('(')) {
-
                     let start = exp.indexOf('(');
                     let counter1 = 0;
                     let counter2 = 0;
-
                     for (let i = 0; i < exp.length; i++) {
                         if (exp[i] == '(') {
                             counter1++;
@@ -52,7 +50,7 @@
             }
 
             //получение двух массивов: опреандов и операторов
-            let reg = /[\+ \* \- \/]/;
+            let reg = /[\+ \* \/]/;
             let reg1 = /\d/;
 
             let arrNumbers = exp.split(reg);
@@ -84,17 +82,6 @@
                     }
                 }
             }
-
-            while (arrOperators.includes("-")) {
-                for (let i = 0; i < arrOperators.length; i++) {
-                    if (arrOperators[i] == "-") {
-                        let z = 0 - arrNumbers[i + 1];
-                        arrNumbers.splice(i + 1, 1, z);
-                        arrOperators.splice(i, 1);
-                    }
-                }
-            }
-
             let result = arrNumbers.reduce((s, c) => s + c);
             return result;
         }
