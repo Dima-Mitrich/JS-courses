@@ -50,8 +50,8 @@
             }
 
             //получение двух массивов: опреандов и операторов
-            let reg = /[\+ \* \/]/;
-            let reg1 = /\d/;
+            let reg = /[\+\*\/]/;
+            let reg1 = /[\d\-]/;
 
             let arrNumbers = exp.split(reg);
             let arrOperators = exp.split(reg1);
