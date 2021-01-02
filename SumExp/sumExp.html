@@ -17,7 +17,6 @@
         let exp2 = "3*(2+3*(4+1))+2*(5+1)+44/2/3";
         let exp3 = "3.4*(2.1+3.5*(4.5+1))+2*(5+1)";
 
-
         function sum(exp) {
 
             //функция для получения выражения в самых глубоких скобках
@@ -50,10 +49,10 @@
             }
 
             //получение двух массивов: опреандов и операторов
-            let reg = /[\+\*\/]/;
+            let reg = /-[\d\.]+|[\d\.]+/g;
             let reg1 = /[\d\-]/;
 
-            let arrNumbers = exp.split(reg);
+            let arrNumbers = exp.match(reg);
             let arrOperators = exp.split(reg1);
 
             for (let i = 0; i < arrNumbers.length; i++) {
@@ -88,12 +87,12 @@
 
         console.log('Ваш пример:');
         console.log(`${exp} = ${sum(exp)}`);
-        
+
         console.log('Другие примеры:');
         console.log(`${exp1} = ${sum(exp1)}`);
         console.log(`${exp2} = ${sum(exp2)}`);
         console.log(`${exp3} = ${sum(exp3)}`);
-
+        
     </script>
 </body>
 
