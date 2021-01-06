@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <form method="POST" action="https://fe.it-academy.by/TestForm.php" name="f1">
+        <div>
+            <label for="devs">Разработчики: </label>
+            <input type="text" name="devs" required>
+        </div>
+
+        <div>
+            <label for="sitename">Имя сайта: </label>
+            <input type="text" name="sitename" required>
+        </div>
+
+        <div>
+            <label for="siteurl">URL сайта: </label>
+            <input type="text" name="siteurl" required>
+        </div>
+
+        <div>
+            <label for="date">Дата запуска сайта: </label>
+            <input type="number" name="date" required>
+        </div>
+
+        <div>
+            <label for="visitors">Посетителей в сутки: </label>
+            <input type="text" name="visitors" required>
+        </div>
+
+        <div>
+            <label for="email">E-mail для связи: </label>
+            <input type="text" name="email" required>
+        </div>
+
+        <div>
+            <label for="division">Рубрика каталога: </label>
+            <select name="division">
+                <option value="1">Бытовая техника</option>
+                <option value="2">Здоровье</option>
+                <option value="3">Уют</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="payment">Размещение: </label>
+            <input type="radio" name="payment" value="free">Бесплатное
+            <input type="radio" name="payment" value="paid">Платное
+            <input type="radio" name="payment" value="VIP">VIP
+        </div>
+
+        <div>
+            <label for="feedback">Разрешить отзывы: </label>
+            <input type="checkbox" name="feedback">
+        </div>
+
+        <div>
+            <label for="description">Описание сайта: </label>
+            <textarea name="description"></textarea>
+        </div>
+
+        <div>
+            <button type="submit">Опубликовать</button>
+        </div>
+    </form>
+
+    <script>
+
+        "use strict";
+
+        function err(msg) {
+            let errMsg = document.createElement('div');
+            errMsg.name = 'error';
+            errMsg.style = 'background-color: red';
+            errMsg.innerHTML = `Ошибка: пустой или ${msg}`;
+            return errMsg;
+        }
+
+        function validate(event, string) {
+            let input = event.target;
+            let val = input.value;
+            let reg = /[а-я]/i;
+            let div = input.parentNode;
+            if ((reg.test(val) || !val) && div.lastChild.name != 'error') {
+                div.appendChild(err(string));
+            } else if (!reg.test(val) && div.lastChild.name == 'error') {
+                div.lastChild.remove();
+            }
+        }
+
+        let f1 = document.forms.f1;
+        f1.elements.devs.addEventListener('blur', validate);
+
+        f1.elements.sitename.addEventListener('blur', validate)
+
+    </script>
+</body>
+
+</html>
