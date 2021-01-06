@@ -83,22 +83,33 @@
             return errMsg;
         }
 
-        function validate(event, string) {
+        function validateDevs(event) {
             let input = event.target;
             let val = input.value;
             let reg = /[а-я]/i;
             let div = input.parentNode;
             if ((reg.test(val) || !val) && div.lastChild.name != 'error') {
                 div.appendChild(err(string));
-            } else if (!reg.test(val) && div.lastChild.name == 'error') {
+            } else if (!reg.test(val) && val && div.lastChild.name == 'error') {
+                div.lastChild.remove();
+            }
+        }
+
+        function validateSiteName(event) {
+            let input = event.target;
+            let val = input.value;
+            let div = input.parentNode;
+            if ((!val.startsWith('www.') || !val) && div.lastChild.name != 'error') {
+                div.appendChild(err('название должно начинаться с www.'));
+            } else if (val.startsWith('www') && val && div.lastChild.name == 'error') {
                 div.lastChild.remove();
             }
         }
 
         let f1 = document.forms.f1;
-        f1.elements.devs.addEventListener('blur', validate);
+        f1.elements.devs.addEventListener('blur', validateDevs);
 
-        f1.elements.sitename.addEventListener('blur', validate)
+        f1.elements.sitename.addEventListener('blur', validateSiteName);
 
     </script>
 </body>
