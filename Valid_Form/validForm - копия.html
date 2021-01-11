@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <form method="POST" action="https://fe.it-academy.by/TestForm.php" name="f1">
+        <div>
+            <label for="devs">Разработчики: </label>
+            <input type="text" name="devs" class="input">
+        </div>
+
+        <div>
+            <label for="sitename">Имя сайта: </label>
+            <input type="text" name="sitename" class="input">
+        </div>
+
+        <div>
+            <label for="siteurl">URL сайта: </label>
+            <input type="text" name="siteurl" class="input">
+        </div>
+
+        <div>
+            <label for="date">Дата запуска сайта: </label>
+            <input type="text" name="date" class="input">
+        </div>
+
+        <div>
+            <label for="visitors">Посетителей в сутки: </label>
+            <input type="number" name="visitors" class="input">
+        </div>
+
+        <div>
+            <label for="email">E-mail для связи: </label>
+            <input type="text" name="email" class="input">
+        </div>
+
+        <div>
+            <label for="division">Рубрика каталога: </label>
+            <select name="division" class="check">
+                <option value="empty"></option>
+                <option value="appliances">Бытовая техника</option>
+                <option value="health">Здоровье</option>
+                <option value="cosiness">Уют</option>
+            </select>
+        </div>
+
+        <div id="radio" class="check">
+            <label for="payment">Размещение: </label>
+            <input type="radio" name="payment" value="free">Бесплатное
+            <input type="radio" name="payment" value="paid">Платное
+            <input type="radio" name="payment" value="VIP">VIP
+        </div>
+
+        <div>
+            <label for="feedback">Разрешить отзывы: </label>
+            <input type="checkbox" name="feedback">
+        </div>
+
+        <div>
+            <label for="description">Описание сайта: </label>
+            <textarea name="description" class="input"></textarea>
+        </div>
+
+        <div>
+            <button type="submit">Опубликовать</button>
+        </div>
+    </form>
+
+    <script>
+
+        "use strict";
+
+        //условия валидации
+        let devsVal = 'поле не заполнено или разрешены только латинские буквы или цифры';
+        let devsReg = /^[a-zA-Z0-9]+$/;
+
+        let siteNameVal = 'поле не заполнено или разрешены только латинские буквы или цифры';
+        let siteNameReg = /^[a-zA-Z0-9]+$/;
+
+        let siteUrlVal = 'поле не заполнено или разрешенный формат: www.example.domen';
+        let siteUrlReg = /^[www.]+([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$/;
+
+        let dateVal = 'поле не заполнено или разрешенный формат: DD.MM.YYYY';
+        let dateReg = /^(0[1-9]|1[0-9]|2[0-9]|3[01])\.(0[1-9]|1[012])\.[0-9]{4}$/;
+
+        let visitorsVal = 'поле не заполнено или разрешены только числа';
+        let visitorsReg = /^\d/;
+
+        let emailVal = 'поле не заполнено или разрешенный формат: example@exmp.com';
+        let emailReg = /^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/;
+
+        let descriptionVal = 'поле не заполнено или разрешено минимум 10 символов, максимум 30 и только русский язык';
+        let descriptionReg = /^[а-яА-я]{10,30}$/;
+
+        let arr = new Array;
+
+        //создаем сообщение об ошибке
+        function err(msg) {
+            let errMsg = document.createElement('div');
+            errMsg.name = 'error';
+            errMsg.style = 'background-color: red';
+            errMsg.innerHTML = `Ошибка: ${msg}`;
+            return errMsg;
+        }
+
+        //валидация вводимых в поля значений
+        function validateInput(regExp, condition) {
+
+            return function (event) {
+                let input = event.target;
+                let val = input.value;
+                let div = input.parentNode;
+
+                //проверка соответсвия шаблону и заполненности строки
+                if ((!regExp.test(val) || !val) && div.lastChild.name != 'error') {
+                    div.appendChild(err(condition));
+                //если пользователь исправил - удаляем сообщение об ошибке
+                } else if (regExp.test(val) && val && div.lastChild.name == 'error') {
+                    div.lastChild.remove();
+                }
+            }
+        }
+
+        //валидация радио кнопок
+        function validateRadio(event) {
+            let radioNodeList = document.getElementsByName('payment');
+            let div = radioNodeList[0].parentNode;
+
+            for (let i = 0; i < radioNodeList.length; i++) {
+                //валидация по значению "бесплатно"
+                if (radioNodeList[i].checked && radioNodeList[i].value === 'free') {
+                    if (div.lastChild.name === 'error') div.lastChild.remove();
+                    div.appendChild(err('бесплатно временно недоступно'));
+                    return;
+                }
+                //если пользователь выбрал другое - удаляем сообщение об ошибке
+                else if (radioNodeList[i].checked) {
+                    if (div.lastChild.name === 'error') div.lastChild.remove();
+                    return;
+                }
+            }
+            //если не выбрано ничего - добавляем один раз сообщение об ошибке
+            if (div.lastChild.name !== 'error') div.appendChild(err('ничего не выбрано'));
+        }
+
+        //валидация селект 
+        function validateSelect(event) {
+            let select = event.target;
+            let div = select.parentNode;
+
+            //валидация по значению "Уют"
+            if (select.value === 'cosiness') {
+                if (div.lastChild.name === 'error') div.lastChild.remove();
+                div.appendChild(err('"Уют" временно недоступно'));
+            }
+            //если не выбрано ничего
+            else if (select.value === 'empty') {
+                if(div.lastChild.name === 'error') div.lastChild.remove();
+                div.appendChild(err('Выберете категорию'));
+            }
+            //если пользователь исправил - убираем сообщение об ошибке
+            else if (div.lastChild.name == 'error') div.lastChild.remove();
+        }
+
+        //валидация всех форм перед отправкой
+        function submit(event) {
+
+            event.preventDefault();
+            let form = event.target;
+
+            //получаем действия
+            let blur = new Event('blur');
+            let change = new Event('change');
+
+            //получаем коллекцию узлов с именем класса инпут и на месте преобразуем ее в массив
+            let inputArr = Array.from(form.querySelectorAll('.input'));
+            //иммитриуем действие для валидации инпутов
+            inputArr.forEach(element => element.dispatchEvent(blur));
+            //забираем в массив все сообщения об ошибках
+            let errorsArr = inputArr.filter(element => element.parentNode.lastChild.name === 'error');
+
+            //тоже самое для невводимых значений
+            let checkArr = Array.from(form.querySelectorAll('.check'));
+            checkArr.forEach(element => element.dispatchEvent(change));
+            let errorsArr1 = checkArr.filter(element => element.parentNode.lastChild.name === 'error');
+
+            //фокусируем на поле с ошибкой если есть и не даем форме отправиться пока есть ошибки
+            if (errorsArr.length) {
+                errorsArr[0].focus();
+            } else if (errorsArr1.length) {
+                return;
+            }
+            else form.submit();
+        }
+
+
+        let f1 = document.forms.f1;
+        f1.devs.addEventListener('blur', validateInput(devsReg, devsVal));
+
+        f1.sitename.addEventListener('blur', validateInput(siteNameReg, siteNameVal));
+
+        f1.siteurl.addEventListener('blur', validateInput(siteUrlReg, siteUrlVal));
+
+        f1.date.addEventListener('blur', validateInput(dateReg, dateVal));
+
+        f1.email.addEventListener('blur', validateInput(emailReg, emailVal));
+
+        f1.visitors.addEventListener('blur', validateInput(visitorsReg, visitorsVal));
+
+        f1.description.addEventListener('blur', validateInput(descriptionReg, descriptionVal));
+
+        document.getElementById('radio').addEventListener('change', validateRadio);
+
+        f1.division.addEventListener('change', validateSelect);
+
+        f1.addEventListener('submit', submit);
+
+    </script>
+</body>
+
+</html>
