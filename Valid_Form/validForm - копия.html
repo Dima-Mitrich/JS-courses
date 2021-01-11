@@ -113,6 +113,7 @@
         function validateInput(regExp, condition) {
 
             return function (event) {
+                event = event || window.event;
                 let input = event.target;
                 let val = input.value;
                 let div = input.parentNode;
@@ -129,6 +130,7 @@
 
         //валидация радио кнопок
         function validateRadio(event) {
+            event = event || window.event;
             let radioNodeList = document.getElementsByName('payment');
             let div = radioNodeList[0].parentNode;
 
@@ -151,6 +153,7 @@
 
         //валидация селект 
         function validateSelect(event) {
+            event = event || window.event;
             let select = event.target;
             let div = select.parentNode;
 
@@ -170,6 +173,7 @@
 
         //валидация всех форм перед отправкой
         function submit(event) {
+            event = event || window.event;
 
             event.preventDefault();
             let form = event.target;
