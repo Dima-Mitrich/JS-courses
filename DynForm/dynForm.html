@@ -8,104 +8,175 @@
 </head>
 
 <body>
+
+    <button id='btn1'>Форма №1</button>
+    <button id='btn2'>Форма №2</button>
+
     <script>
 
-        "use strict";
-
-        var formDef1 =
+        let formDef1 =
             [
-                { label: 'Название сайта:', kind: 'longtext', name: 'sitename' },
-                { label: 'URL сайта:', kind: 'longtext', name: 'siteurl' },
-                { label: 'Посетителей в сутки:', kind: 'number', name: 'visitors' },
-                { label: 'E-mail для связи:', kind: 'shorttext', name: 'email' },
+                { label: "Название сайта: ", kind: "longtext", name: "sitename" },
+                { label: "URL сайта: ", kind: "longtext", name: "siteurl" },
+                { label: "Поситителей в сутки: ", kind: "number", name: "visitors" },
+                { label: "E-mail для связи: ", kind: "shorttext", name: "email" },
                 {
-                    label: 'Рубрика каталога:', kind: 'combo', name: 'division',
-                    variants: [{ text: 'здоровье', value: 1 }, { text: 'домашний уют', value: 2 }, { text: 'бытовая техника', value: 3 }]
+                    label: "Рубрика каталога: ", kind: "combo", name: "division",
+                    variants: [{ text: "здоровье", value: 1 }, { text: "домашний уют", value: 2 }, { text: "бытовая техника", value: 3 }]
                 },
                 {
-                    label: 'Размещение:', kind: 'radio', name: 'payment',
-                    variants: [{ text: 'бесплатное', value: 1 }, { text: 'платное', value: 2 }, { text: 'VIP', value: 3 }]
+                    label: "Размещение: ", kind: "radio", name: "payment",
+                    variants: [{ text: "бесплатное", value: 1 }, { text: "платное", value: 2 }, { text: "VIP", value: 3 }]
                 },
-                { label: 'Разрешить отзывы:', kind: 'check', name: 'votes' },
-                { label: 'Описание сайта:', kind: 'memo', name: 'description' },
-                { label: 'Опубликовать:', kind: 'submit' },
+                { label: "Разрешить отзывы: ", kind: "check", name: "votes" },
+                { label: "Описание сайта: ", kind: "memo", name: "description" },
+                { label: "Опубликовать", kind: "submit" },
             ];
 
-        var formDef2 =
+        let formDef2 =
             [
-                { label: 'Фамилия:', kind: 'longtext', name: 'lastname' },
-                { label: 'Имя:', kind: 'longtext', name: 'firstname' },
-                { label: 'Отчество:', kind: 'longtext', name: 'secondname' },
-                { label: 'Возраст:', kind: 'number', name: 'age' },
-                { label: 'Зарегистрироваться:', kind: 'submit' },
+                { label: "Фамилия: ", kind: "longtext", name: "lastname" },
+                { label: "Имя: ", kind: "longtext", name: "firstname" },
+                { label: "Отчество: ", kind: "longtext", name: "secondname" },
+                { label: "Возраст: ", kind: "number", name: "age" },
+                { label: "Зарегестрироваться", kind: "submit" },
             ];
 
+        let tag = 'form';
 
         function dynForm(teg, arr) {
             let form = document.createElement(teg);
+            form.action = 'https://fe.it-academy.by/TestForm.php'
             let label;
             let input;
-            let select;
+            let div;
 
             for (let i = 0; i < arr.length; i++) {
 
-                if (arr[i].kind == 'longtext') {
+                if (arr[i].kind === 'longtext') {
                     label = document.createElement('label');
                     input = document.createElement('input');
+                    div = document.createElement('div');
+                    input.name = arr[i].name
+                    label.htmlFor = input.name;
                     label.innerHTML = arr[i].label;
-                    label.htmlFor = arr[i].name;
-                    input.name = arr[i].name;
                     input.type = 'text';
                     input.size = '40';
+                    form.appendChild(div);
+                    div.appendChild(label);
+                    div.appendChild(input);
                 }
-                else if (arr[i].kind == 'shorttext') {
+
+                else if (arr[i].kind === 'shorttext') {
                     label = document.createElement('label');
                     input = document.createElement('input');
+                    div = document.createElement('div');
+                    input.name = arr[i].name
+                    label.htmlFor = input.name;
                     label.innerHTML = arr[i].label;
-                    label.htmlFor = arr[i].name;
                     input.name = arr[i].name;
                     input.type = 'text';
                     input.size = '20';
+                    form.appendChild(div);
+                    div.appendChild(label);
+                    div.appendChild(input);
                 }
-                else if (arr[i].kind == 'number') {
+
+                else if (arr[i].kind === 'number') {
                     label = document.createElement('label');
                     input = document.createElement('input');
-                    label.innerHTML = arr[i].label;
-                    label.htmlFor = arr[i].name;
+                    div = document.createElement('div');
                     input.name = arr[i].name;
+                    label.htmlFor = input.name;
+                    label.innerHTML = arr[i].label;
                     input.type = 'number';
+                    input.size = '40';
+                    form.appendChild(div);
+                    div.appendChild(label);
+                    div.appendChild(input);
                 }
-                else if (arr[i].kind == 'combo') {
-                    label = document.createElement('label');
-                    select = document.createElement('select');
-                    label.innerHTML = arr[i].label;
-                    label.htmlFor = arr[i].name;
-                    let option;
-                    for (let n = 0; n < arr[i].variants; n++) {
-                        option = document.createElement('option');
-                        option.value = i + 1;
-                        option.innerHTML = arr[i].variants[n].text;
-                    }
-                }
-                else if (arr[i].kind == 'radio') {
-                    label = document.createElement('label');
-                    label.innerHTML = arr[i].label;
-                    label.htmlFor = arr[i].name;
-                    for (let n = 0; n < arr[i].variants; n++) {
-                        input = document.createElement('input');
-                        input.value = i + 1;
-                        input.innerHTML = arr[i].variants[n].text;
-                    }
-                }
-                form.appendChild(label);
-                form.appendChild(input);
-                form.append(select);
-            }
 
+                else if (arr[i].kind === 'submit') {
+                    let button = document.createElement('button');
+                    button.type = 'submit';
+                    button.innerHTML = arr[i].label;
+                    form.appendChild(button);
+                }
+
+                else if (arr[i].kind === 'combo') {
+                    div = document.createElement('div');
+                    label = document.createElement('label');
+                    let select = document.createElement('select');
+                    select.name = arr[i].name;
+                    label.htmlFor = select.name;
+                    label.innerHTML = arr[i].label;
+                    let option;
+                    for (let n = 0; n < arr[i].variants.length; n++) {
+                        option = document.createElement('option');
+                        option.value = n + 1;
+                        option.innerHTML = arr[i].variants[n].text;
+                        select.appendChild(option);
+                    }
+                    div.appendChild(label);
+                    div.appendChild(select);
+                    form.appendChild(div);
+                }
+
+                else if (arr[i].kind === 'radio') {
+                    div = document.createElement('div');
+                    div.innerHTML = arr[i].label;
+                    for (let n = 0; n < arr[i].variants.length; n++) {
+                        input = document.createElement('input');
+                        label = document.createElement('label');
+                        label.innerHTML = arr[i].variants[n].text;
+                        input.type = 'radio';
+                        input.name = arr[i].name;
+                        input.value = arr[i].variants[n].value;
+                        label.prepend(input);
+                        div.appendChild(label);
+                    }
+                    form.appendChild(div);
+                }
+
+                else if (arr[i].kind === 'check') {
+                    div = document.createElement('div');
+                    label = document.createElement('label');
+                    input = document.createElement('input');
+                    input.name = arr[i].name;
+                    label.htmlFor = input.name;
+                    label.innerHTML = arr[i].label;
+                    input.type = 'checkbox';
+                    div.appendChild(label);
+                    div.appendChild(input);
+                    form.appendChild(div);
+                }
+
+                else if (arr[i].kind === 'memo') {
+                    div = document.createElement('div');
+                    label = document.createElement('label');
+                    let textarea = document.createElement('textarea');
+                    textarea.name = arr[i].name;
+                    label.htmlFor = textarea.name;
+                    label.innerHTML = arr[i].label;
+                    div.appendChild(label);
+                    div.appendChild(textarea);
+                    form.appendChild(div);
+                }
+
+            }
             document.body.append(form);
         }
 
-        dynForm('form', formDef1);
+        btn1 = document.getElementById('btn1');
+        btn2 = document.getElementById('btn2');
+
+        btn1.onclick = function () {
+            dynForm(tag, formDef1);
+        };
+        btn2.onclick = function () {
+            dynForm(tag, formDef2);
+        }
+
     </script>
 </body>
 
