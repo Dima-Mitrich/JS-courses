@@ -49,8 +49,6 @@
             document.addEventListener('mousemove', onMouseMove);
             pic.addEventListener('mouseup', onMouseUp);
 
-            moveAt(event.pageX, event.pageY);
-
 
             function moveAt(pageX, pageY) {
                 pic.style.top = pageY - shiftY + 'px';
