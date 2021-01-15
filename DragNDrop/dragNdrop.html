@@ -1,15 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
+
+    <div id="div">
+        <img src="Group5.png">
+        <img src="Group7.png">
+        <img src="Group8.png">
+        <img src="Group9.png">
+    </div>
+
     <script>
 
         "use string";
 
+        let div = document.getElementById("div");
+        let z = 0;
+        div.addEventListener('mousedown', onMouseDown);
+
+        window.onload = function () {
+            let arr = div.children;
+            for (let pict of arr) {
+                pict.style.left = pict.offsetLeft + 'px';
+                pict.style.top = pict.offsetTop + 'px';
+            }
+            for (let pict of arr) {
+                pict.style.position = 'absolute';
+            }
+        }
+
+        function onMouseDown(event) {
+            event = event || window.event;
+
+            let pic = event.target;
+            let shiftX = event.clientX - pic.getBoundingClientRect().left;
+            let shiftY = event.clientY - pic.getBoundingClientRect().top;
+
+            if (pic.tagName !== 'IMG') return;
+            pic.style.position = "absolute";
+            pic.style.zIndex = z++;
+
+            document.addEventListener('mousemove', onMouseMove);
+            pic.addEventListener('mouseup', onMouseUp);
+
+            moveAt(event.pageX, event.pageY);
+
+
+            function moveAt(pageX, pageY) {
+                pic.style.top = pageY - shiftY + 'px';
+                pic.style.left = pageX - shiftX + 'px';
+            }
+
+
+            function onMouseMove(event) {
+                moveAt(event.pageX, event.pageY);
+            }
+
+
+            function onMouseUp(event) {
+                document.removeEventListener('mousemove', onMouseMove);
+                pic.removeEventListener('mouseup', onMouseUp);
+            }
+
+            pic.ondragstart = function () {
+                return false;
+            };
+        }
+
     </script>
 </body>
+
 </html>
