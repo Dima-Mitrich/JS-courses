@@ -44,7 +44,7 @@
 
             if (pic.tagName !== 'IMG') return;
             pic.style.position = "absolute";
-            pic.style.zIndex = z++;
+            pic.style.zIndex = ++z;
 
             document.addEventListener('mousemove', onMouseMove);
             pic.addEventListener('mouseup', onMouseUp);
