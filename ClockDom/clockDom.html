@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div style="background-color: darkgoldenrod; border-radius: 50%; width: 300px; height: 300px; position: relative; margin: 20px;"
+        id="clock">
+    </div>
+
+    <script>
+
+        "use script";
+
+        let clock = document.getElementById('clock');
+        let radius = clock.offsetWidth / 2;
+        let clockCenterX = clock.offsetWidth - radius;
+        let clockCenterY = clock.offsetHeight - radius;
+        let oneHourAngle = 120; //градус соответствующий "диву" на один час. От него строим все остальные дивы в цикле прибавляя по 30 градусов
+
+        //функция для конвертирования градусов в радианы
+        function convertInRad(grad) {
+            return grad * Math.PI / 180;
+        }
+
+        //создаем цифры на часах
+        for (let i = 1; i <= 12; i++) {
+            let hour = document.createElement('div');
+            clock.appendChild(hour);
+            hour.innerHTML = i;
+            hour.style.width = 30 + 'px';
+            hour.style.height = 30 + 'px';
+            hour.style.borderRadius = 50 + '%';
+            hour.style.position = 'absolute';
+            hour.style.color = 'white';
+            hour.style.display = 'flex';
+            hour.style.justifyContent = 'center'
+            hour.style.alignItems = 'center';
+            let hourCenterX = clockCenterX - hour.offsetWidth / 2 - radius * Math.cos(convertInRad(oneHourAngle));
+            let hourCenterY = clockCenterY - hour.offsetHeight / 2 - radius * Math.sin(convertInRad(oneHourAngle));
+            hour.style.top = hourCenterY + 'px';
+            hour.style.left = hourCenterX + 'px';
+            hour.style.backgroundColor = 'gray';
+            oneHourAngle += 30;
+        }
+
+
+        function buildArrow(arrowWidth, arrowHeight) {
+            arrowName = document.createElement('div');
+            arrowName.style.width = arrowWidth + 'px';
+            arrowName.style.height = arrowHeight + 'px';
+            arrowName.style.backgroundColor = 'black';
+            arrowName.style.borderRadius = 40 + '%';
+            clock.appendChild(arrowName);
+            arrowName.style.position = 'absolute';
+            arrowName.style.top = clockCenterY - arrowName.offsetHeight * 0.9 + 'px';
+            arrowName.style.left = clockCenterX - arrowName.offsetWidth / 2 + 'px';
+            arrowName.style.transformOrigin = '50% 90%';      //задаем стрелкам точку вращения
+            return arrowName;
+        }
+
+        //создаем стрелки с понравившимися парметрами
+        let hourArrow = buildArrow(10, 130);
+        let minuteArrow = buildArrow(5, 140);
+        let secondArrow = buildArrow(2, 145);
+
+        let dateDiv = document.createElement('div');
+        clock.appendChild(dateDiv);
+
+
+        function timeUpdate() {
+            let currTime = new Date();
+            let secondArrowAngle; //угол секундной стрелки
+            let minuteArrowAngle; //угол минутной стрелки
+            let hourArrowAngle; //угол часовой стрелки
+            dateDiv.innerHTML = formatTime(currTime);
+            rotateArrow(secondArrow, secondArrowAngle);
+            rotateArrow(minuteArrow, minuteArrowAngle);
+            rotateArrow(hourArrow, hourArrowAngle);
+
+            function formatTime(dt) {
+                let hours = dt.getHours();
+                let minutes = dt.getMinutes();
+                let seconds = dt.getSeconds();
+                secondArrowAngle = seconds * 6; //задаем угол поворота секундной стрелки: количество секунд умноженное на градус одного деления (360/60)
+                minuteArrowAngle = minutes * 6; //тоже самое с минутной стрелкой
+                //0.5 - количество градусов проходимое часовой стрелкой за минуту
+                //30 - размер часового деления на часах (градусов)
+                hourArrowAngle = (hours > 12) ? ((hours - 12) * 30 + minutes * 0.5) : (hours * 30 + minutes * 0.5); //преобразуем в 12-часовой формат и вычисляем положения часовой стрелки
+
+                //добавляем ноль ко времени если нужно
+                function addZero(val) {
+                    if (val.toString().length == 1) return 0 + val.toString();
+                    else return val.toString();
+                }
+
+                return `${addZero(hours)}:${addZero(minutes)}:${addZero(seconds)}`;
+            }
+
+            function rotateArrow(arrow, angle) {
+                if (angle >= 360) angle = 0;
+                arrow.style.transform = `rotate(${angle}deg)`;
+            }
+            setTimeout(timeUpdate, 1000);
+        }
+
+        setTimeout(timeUpdate, 1000);
+
+    </script>
+</body>
+
+</html>
