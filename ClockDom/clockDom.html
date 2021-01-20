@@ -14,7 +14,7 @@
 
     <script>
 
-        "use script";
+        "use strict";
 
         let clock = document.getElementById('clock');
         let radius = clock.offsetWidth / 2;
@@ -50,7 +50,7 @@
 
 
         function buildArrow(arrowWidth, arrowHeight) {
-            arrowName = document.createElement('div');
+            let arrowName = document.createElement('div');
             arrowName.style.width = arrowWidth + 'px';
             arrowName.style.height = arrowHeight + 'px';
             arrowName.style.backgroundColor = 'black';
@@ -116,7 +116,7 @@
             setTimeout(timeUpdate, 1000);
         }
 
-        setTimeout(timeUpdate, 1000);
+        timeUpdate();
 
     </script>
 </body>
