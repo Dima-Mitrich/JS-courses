@@ -40,8 +40,8 @@
             hour.style.display = 'flex';
             hour.style.justifyContent = 'center'
             hour.style.alignItems = 'center';
-            let hourCenterX = clockCenterX - hour.offsetWidth / 2 - radius * Math.cos(convertInRad(oneHourAngle));
-            let hourCenterY = clockCenterY - hour.offsetHeight / 2 - radius * Math.sin(convertInRad(oneHourAngle));
+            let hourCenterX = clockCenterX - hour.offsetWidth / 2 - 0.87 * radius * Math.cos(convertInRad(oneHourAngle));
+            let hourCenterY = clockCenterY - hour.offsetHeight / 2 - 0.87 * radius * Math.sin(convertInRad(oneHourAngle));
             hour.style.top = hourCenterY + 'px';
             hour.style.left = hourCenterX + 'px';
             hour.style.backgroundColor = 'gray';
@@ -60,6 +60,7 @@
             arrowName.style.top = clockCenterY - arrowName.offsetHeight * 0.9 + 'px';
             arrowName.style.left = clockCenterX - arrowName.offsetWidth / 2 + 'px';
             arrowName.style.transformOrigin = '50% 90%';      //задаем стрелкам точку вращения
+            arrowName.style.display = 'none';
             return arrowName;
         }
 
@@ -69,6 +70,10 @@
         let secondArrow = buildArrow(2, 145);
 
         let dateDiv = document.createElement('div');
+        dateDiv.style.position = 'absolute';
+        dateDiv.style.top = clockCenterY - 0.2 * clock.offsetHeight + 'px';
+        dateDiv.style.left = clockCenterX - 30 + 'px';
+        console.log(dateDiv.offsetWidth)
         clock.appendChild(dateDiv);
 
 
@@ -81,6 +86,9 @@
             rotateArrow(secondArrow, secondArrowAngle);
             rotateArrow(minuteArrow, minuteArrowAngle);
             rotateArrow(hourArrow, hourArrowAngle);
+            if (secondArrow.style.display = 'none') secondArrow.style.display = 'block';
+            if (minuteArrow.style.display = 'none') minuteArrow.style.display = 'block';
+            if (hourArrow.style.display = 'none') hourArrow.style.display = 'block';
 
             function formatTime(dt) {
                 let hours = dt.getHours();
