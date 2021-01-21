@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="div">
+        <svg width=400 height=400 xmlns='http://www.w3.org/2000/svg' id="svg">
+            <circle cx=170 cy=170 r=150 fill=darkgoldenrod id="clock"></circle>
+        </svg>
+    </div>
+
+    <script>
+
+        "use script";
+
+        let div = document.getElementById('div');
+        let svg = document.getElementById('svg');
+        let clock = document.getElementById('clock');
+        let clockCenterX = parseFloat(clock.getAttribute('cx'));
+        let clockCenterY = parseFloat(clock.getAttribute('cy'));
+        let clockRadius = parseFloat(clock.getAttribute('r'));
+        let oneHourAngle = 120;
+
+        function convertInRad(grad) {
+            return grad * Math.PI / 180;
+        }
+
+        for (let i = 1; i <= 12; i++) {
+            let hour = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+            hour.setAttribute('cy', clockCenterY - 0.85 * clockRadius * Math.sin(convertInRad(oneHourAngle)));
+            hour.setAttribute('cx', clockCenterX - 0.85 * clockRadius * Math.cos(convertInRad(oneHourAngle)));
+            hour.setAttribute('r', 15);
+            hour.setAttribute('fill', 'gray');
+            svg.appendChild(hour);
+            let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('y', hour.getAttribute('cy'));
+            text.setAttribute('x', hour.getAttribute('cx'));
+            text.setAttribute('text-anchor', 'middle');
+            text.setAttribute('fill', 'white');
+            text.innerHTML = i;
+            svg.appendChild(text);
+            oneHourAngle += 30;
+        }
+
+        function buildArrow(arrowWidth, arrowHeight) {
+            let arrow = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            arrow.setAttribute('x1', clockCenterX);
+            arrow.setAttribute('y1', clockCenterY + 10);
+            arrow.setAttribute('x2', clockCenterX);
+            arrow.setAttribute('y2', clockCenterY - arrowHeight);
+            arrow.setAttribute('stroke', 'black');
+            arrow.setAttribute('stroke-width', arrowWidth);
+            arrow.setAttribute('stroke-linecap', 'round');
+            //arrow.setAttribute('transform', `rotate(0,${clockCenterX},${clockCenterY})`)
+            svg.appendChild(arrow);
+            return arrow;
+        }
+
+        let minuteArrow = buildArrow(5, 120);
+        let hourArrow = buildArrow(8, 110);
+        let secondArrow = buildArrow(2, 130);
+
+        let timeContainer = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        timeContainer.setAttribute('x', clockCenterX - 53);
+        timeContainer.setAttribute('y', clockCenterY - 40);
+        timeContainer.setAttribute('font-size', '30');
+        svg.appendChild(timeContainer);
+        
+
+
+        function timeUpdate() {
+            let currTime = new Date();
+            let secondArrowAngle; //угол секундной стрелки
+            let minuteArrowAngle; //угол минутной стрелки
+            let hourArrowAngle; //угол часовой стрелки
+            timeContainer.innerHTML = formatTime(currTime);
+            rotateArrow(secondArrow, secondArrowAngle);
+            rotateArrow(minuteArrow, minuteArrowAngle);
+            rotateArrow(hourArrow, hourArrowAngle);
+
+
+            function formatTime(dt) {
+                let hours = dt.getHours();
+                let minutes = dt.getMinutes();
+                let seconds = dt.getSeconds();
+                secondArrowAngle = seconds * 6; //задаем угол поворота секундной стрелки: количество секунд умноженное на градус одного деления (360/60)
+                minuteArrowAngle = minutes * 6; //тоже самое с минутной стрелкой
+                //0.5 - количество градусов проходимое часовой стрелкой за минуту
+                //30 - размер часового деления на часах (градусов)
+                hourArrowAngle = (hours > 12) ? ((hours - 12) * 30 + minutes * 0.5) : (hours * 30 + minutes * 0.5); //преобразуем в 12-часовой формат и вычисляем положения часовой стрелки
+
+
+                function addZero(val) {
+                    if (val.toString().length == 1) return 0 + val.toString();
+                    else return val.toString();
+                }
+
+                return `${addZero(hours)}:${addZero(minutes)}:${addZero(seconds)}`;
+            }
+
+            function rotateArrow(arrow, angle) {
+                if (angle >= 360) angle = 0;
+                arrow.setAttribute('transform', `rotate(${angle},${clockCenterX},${clockCenterY})`);
+            }
+            setTimeout(timeUpdate, 1000);
+        }
+
+        timeUpdate();
+        
+    </script>
+</body>
+
+</html>
