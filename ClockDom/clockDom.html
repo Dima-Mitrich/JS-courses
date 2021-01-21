@@ -60,7 +60,6 @@
             arrowName.style.top = clockCenterY - arrowName.offsetHeight * 0.9 + 'px';
             arrowName.style.left = clockCenterX - arrowName.offsetWidth / 2 + 'px';
             arrowName.style.transformOrigin = '50% 90%';      //задаем стрелкам точку вращения
-            arrowName.style.display = 'none';
             return arrowName;
         }
 
@@ -72,7 +71,9 @@
         let dateDiv = document.createElement('div');
         dateDiv.style.position = 'absolute';
         dateDiv.style.top = clockCenterY - 0.2 * clock.offsetHeight + 'px';
-        dateDiv.style.left = clockCenterX - 30 + 'px';
+        let dateDivWidth = 60;
+        dateDiv.style.width = dateDivWidth + 'px'
+        dateDiv.style.left = clockCenterX - dateDivWidth / 2 + 'px';
         console.log(dateDiv.offsetWidth)
         clock.appendChild(dateDiv);
 
@@ -86,9 +87,6 @@
             rotateArrow(secondArrow, secondArrowAngle);
             rotateArrow(minuteArrow, minuteArrowAngle);
             rotateArrow(hourArrow, hourArrowAngle);
-            if (secondArrow.style.display = 'none') secondArrow.style.display = 'block';
-            if (minuteArrow.style.display = 'none') minuteArrow.style.display = 'block';
-            if (hourArrow.style.display = 'none') hourArrow.style.display = 'block';
 
             function formatTime(dt) {
                 let hours = dt.getHours();
@@ -117,7 +115,6 @@
         }
 
         timeUpdate();
-
     </script>
 </body>
 
