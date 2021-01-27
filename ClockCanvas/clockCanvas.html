@@ -99,8 +99,7 @@
 
                 return `${addZero(hours)}:${addZero(minutes)}:${addZero(seconds)}`;
             }
-
-            setTimeout(drawClock, 1000 - currTime.getMilliseconds);
+            setTimeout(drawClock, 1000 - currTime.getMilliseconds());
         }
 
         drawClock();
