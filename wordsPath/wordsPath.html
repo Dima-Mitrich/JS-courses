@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+
+        "use strict";
+
+        //со словами "муха" и "слон": муха - мура - тура - тара - пара - парк - паук - паут - плут - плот - слот - слон
+        //со словами "лиса" и "лось": лиса - липа - лупа - лужа - ложа - ложь - лось
+
+        let dict = ['лужа', "муза", "лира", "меха", "лига", "тара", "липа", "тура", "парк", "ложь", "лупа", "плот",
+            "мура", "паук", "паут", "плут", "ложа", "слот", "пара"];
+        let alphaBet = ['а', "б", "в", "г", "д", "е", "ж", "з", "и", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я"];
+
+        function path(firstWord, secondWord) {
+
+            let queue = []; //очередь рассматриваемых узлов
+            let visitedNodes = new Set; //список посещенных узлов 
+            let cameFrom = new Set; //записываем путь 
+
+            queue.push(firstWord);
+            visitedNodes.add(firstWord);
+
+            while (queue.length > 0) {
+                let elem = queue.pop();
+
+                for (let i = 0; i < elem.length; i++) {
+                    let arr = elem.split('');
+                    for (let j = 0; j < alphaBet.length; j++) {
+                        arr[i] = alphaBet[j];
+                        let word = arr.join('');
+                        if (word === secondWord) {
+                            cameFrom.add(elem);
+                            cameFrom.add(secondWord);
+                            return cameFrom;
+                        } else if (dict.includes(word) && !visitedNodes.has(word)) {
+                            queue.push(word);
+                            visitedNodes.add(word);
+
+                            if (!cameFrom.has(elem)) cameFrom.add(elem);
+                        }
+                    }
+                }
+            }
+            return 'fail';
+        }
+
+        let res1 = path('муха', 'слон');
+        let res2 = path('лиса', 'лось');
+
+        console.log("Вариант 1: ");
+        for (let val of res1) console.log(val);
+
+        console.log("Вариант 2: ");
+        for (let val of res2) console.log(val);
+
+    </script>
+</body>
+
+</html>
