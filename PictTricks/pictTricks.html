@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="container">
+        <img src="kartina_Solov_yova_L.G._Monahi._Ne_tuda_zaekhali (1).jpg"
+            style="position: absolute; top:10%; left: 10%;" id="picture">
+    </div>
+
+    <script>
+
+        "use strict";
+
+        let mainPic = document.getElementById('picture');
+        let mainContainer = document.getElementById('container');
+
+        for (let i = 1; i < 9; i++) {
+            let controlElem = document.createElement('div');
+            mainContainer.appendChild(controlElem);
+            controlElem.id = `contrElem_${i}`;
+            controlElem.style.backgroundColor = 'blue';
+            controlElem.style.position = 'absolute';
+            controlElem.style.borderRadius = 50 + '%';
+            controlElem.style.width = 10 + 'px';
+            controlElem.style.height = 10 + 'px';
+        }
+
+        let controlElem1 = document.getElementById('contrElem_1');
+        let controlElem2 = document.getElementById('contrElem_2');
+        let controlElem3 = document.getElementById('contrElem_3');
+        let controlElem4 = document.getElementById('contrElem_4');
+        let controlElem5 = document.getElementById('contrElem_5');
+        let controlElem6 = document.getElementById('contrElem_6');
+        let controlElem7 = document.getElementById('contrElem_7');
+        let controlElem8 = document.getElementById('contrElem_8');
+
+        window.onload = function () {
+            controlElem1.style.top = mainPic.offsetTop + 'px';
+            controlElem1.style.left = mainPic.offsetLeft + 'px';
+
+            controlElem2.style.top = mainPic.offsetTop + 'px';
+            controlElem2.style.left = mainPic.offsetLeft + mainPic.offsetWidth / 2 + 'px';
+
+            controlElem3.style.top = mainPic.offsetTop + 'px';
+            controlElem3.style.left = mainPic.offsetLeft + mainPic.offsetWidth - controlElem3.offsetWidth + 'px';
+
+            controlElem4.style.top = mainPic.offsetTop + mainPic.offsetHeight / 2 - controlElem4.offsetHeight / 2 + 'px';
+            controlElem4.style.left = mainPic.offsetLeft + mainPic.offsetWidth - controlElem4.offsetWidth + 'px';
+
+            controlElem5.style.top = mainPic.offsetTop + mainPic.offsetHeight - controlElem5.offsetHeight + 'px';
+            controlElem5.style.left = mainPic.offsetLeft + mainPic.offsetWidth - controlElem5.offsetWidth + 'px';
+
+            controlElem6.style.top = mainPic.offsetTop + mainPic.offsetHeight - controlElem1.offsetHeight + 'px';
+            controlElem6.style.left = mainPic.offsetLeft + mainPic.offsetWidth / 2 + 'px';
+
+            controlElem7.style.top = mainPic.offsetTop + mainPic.offsetHeight - controlElem1.offsetHeight + 'px';
+            controlElem7.style.left = mainPic.offsetLeft + 'px';
+
+            controlElem8.style.top = mainPic.offsetTop + mainPic.offsetHeight / 2 - controlElem1.offsetHeight / 2 + 'px';
+            controlElem8.style.left = mainPic.offsetLeft + 'px';
+        }
+
+        controlElem4.addEventListener('mousedown', contrElemRight);
+
+        function contrElemRight(event) {
+            event = event || window.event;
+
+            let divTarget = event.target;
+            let shiftX = event.clientX - divTarget.getBoundingClientRect().left;
+            let shiftY = event.clientY - divTarget.getBoundingClientRect().top;
+
+            function moveAt(pageX) {
+                
+                divTarget.style.left = pageX - shiftX + 'px';
+            }
+
+            document.addEventListener('mousemove', onMouseMove);
+
+            function onMouseMove(event) {
+                moveAt(event.pageX);
+                mainPic.style.width = event.pageX - mainPic.offsetLeft + 'px';
+                mainPic.style.height = mainPic.offsetHeight + 'px';
+            }
+
+            document.addEventListener('mouseup', onMouseUp);
+
+            function onMouseUp() {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+
+            mainPic.ondragstart = function () {
+                return false;
+            };
+
+            mainPic.onmousemove = function () {
+                return false;
+            };
+        }
+
+
+        controlElem8.addEventListener('mousedown', contrElemLeft)
+
+
+        function contrElemLeft(event) {
+            event = event || window.event;
+
+            let divTarget = event.target;
+            let kig = mainPic.offsetLeft;
+            let op = mainPic.offsetWidth;
+            let trye = event.clientX;
+            let shiftX = event.clientX - divTarget.getBoundingClientRect().left;
+            let shiftY = event.clientY - divTarget.getBoundingClientRect().top;
+
+            function moveAt(pageX) {
+                divTarget.style.left = pageX - shiftX + 'px';
+            }
+
+            document.addEventListener('mousemove', onMouseMove);
+
+            function onMouseMove(event) {
+                moveAt(event.pageX);
+                mainPic.style.left = event.pageX + 'px';
+                mainPic.style.width = op + (kig - event.pageX) + 'px';
+                mainPic.style.height = mainPic.offsetHeight + 'px';
+            }
+
+            document.addEventListener('mouseup', onMouseUp);
+
+            function onMouseUp() {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+
+            mainPic.ondragstart = function () {
+                return false;
+            };
+
+            mainPic.onmousemove = function () {
+                return false;
+            };
+        }
+
+    </script>
+
+
+</body>
+
+</html>
