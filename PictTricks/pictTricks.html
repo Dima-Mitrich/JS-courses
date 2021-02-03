@@ -21,6 +21,7 @@
         mainPic.style.top = '100px';
         mainPic.style.left = '400px';
 
+        //создаем управляющие элементы
         for (let i = 1; i < 9; i++) {
             let controlElem = document.createElement('div');
             mainContainer.appendChild(controlElem);
@@ -32,6 +33,8 @@
             controlElem.style.backgroundColor = 'red';
         }
 
+        //ведем счет управляющих элементов начиная с левого верхнего угла по часовой стрелке.
+        //позиционируем по местам. !IIFE не работает!
         let controlElem_1 = document.getElementById('controlElem_1');
         function posControlElem_1() {
             controlElem_1.style.top = mainPic.offsetTop + 'px';
@@ -111,6 +114,7 @@
             let shiftX = event.clientX - divTarget.getBoundingClientRect().left;
             let shiftY = event.clientY - divTarget.getBoundingClientRect().top;
 
+            //все формулы выведены опытным путем и рисованием
             function moveAt(pageX, pageY) {
                 divTarget.style.top = pageX * Math.tan(45 * Math.PI / 180) - picLeft + picTop - shiftY + 'px';
                 divTarget.style.left = pageX - shiftX + 'px';
@@ -125,7 +129,6 @@
                 mainPic.style.width = picWidth + (picLeft - mainPic.offsetLeft) + 'px';
                 mainPic.style.height = picHeight + (picTop - mainPic.offsetTop) + 'px';
                 event.preventDefault();
-
                 posControlElem_2();
                 posControlElem_3();
                 posControlElem_4();
@@ -211,7 +214,6 @@
                 event.preventDefault();
                 posControlElem_1();
                 posControlElem_2();
-
                 posControlElem_4();
                 posControlElem_5();
                 posControlElem_6();
@@ -295,7 +297,6 @@
                 posControlElem_2();
                 posControlElem_3();
                 posControlElem_4();
-
                 posControlElem_6();
                 posControlElem_7();
                 posControlElem_8();
@@ -333,7 +334,6 @@
                 posControlElem_3();
                 posControlElem_4();
                 posControlElem_5();
-
                 posControlElem_7();
                 posControlElem_8();
             }
@@ -409,7 +409,7 @@
             function onMouseMove(event) {
                 moveAt(event.pageX);
                 mainPic.style.left = divTarget.offsetLeft + 'px';
-                mainPic.style.width = picWidth + picLeft - mainPic.offsetLeft + divTarget.offsetWidth + 'px';
+                mainPic.style.width = picWidth + picLeft - mainPic.offsetLeft + 'px';
                 mainPic.style.height = mainPic.offsetHeight + 'px';
                 event.preventDefault();
                 posControlElem_1();
