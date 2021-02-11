@@ -65,55 +65,60 @@
             startBtn.disabled = true;
         }
 
-
+        
+        //отсчет до начала игры
         function gameStart() {
-            //отсчет до начала игры
-            countBack();
-            setTimeout(gameOn, 3000);
+            counter.innerHTML = `...${count}`;
+            if (count === 0) {
+                count = 3;
+                counter.innerHTML = '';
+                gameOn();
+                return;
+            }
+            count--;
+            let timer = setTimeout(gameStart, 1000);
+        }
 
-            function countBack() {
-                counter.innerHTML = `...${count}`;
-                if (count === 0) {
-                    count = 3;
-                    counter.innerHTML = '';
-                    return;
-                }
-                count--;
-                setTimeout(countBack, 1000);
+
+        function gameOn() {
+
+            tennisBall.style.top = tennisBall.offsetTop + speedY + 'px';
+            tennisBall.style.left = tennisBall.offsetLeft + speedX + 'px';
+
+            if (tennisBall.offsetTop + tennisBall.offsetHeight >= tennisCourt.offsetHeight - 2 || tennisBall.offsetTop <= 0) {
+                speedY = -speedY;
             }
 
-            function gameOn() {
-
-                tennisBall.style.top = tennisBall.offsetTop + speedY + 'px';
-                tennisBall.style.left = tennisBall.offsetLeft + speedX + 'px';
-
-                if (tennisBall.offsetTop + tennisBall.offsetHeight >= tennisCourt.offsetHeight - 2 || tennisBall.offsetTop <= 0) {
-                    speedY = -speedY;
-                }
-
-                if (tennisBall.offsetLeft + tennisBall.offsetWidth >= tennisCourt.offsetWidth) {
-                    scoreLeftPlayer++;
-                    scoreDiv.innerHTML = `Left Player Score - ${scoreLeftPlayer} : Right Player Score - ${scoreRightPlayer}`;
-                    startBtn.disabled = false;
-                    return;
-                } else if (rightPlayer.offsetLeft <= tennisBall.offsetLeft + tennisBall.offsetWidth && rightPlayer.offsetTop <= tennisBall.offsetTop && tennisBall.offsetTop <= rightPlayer.offsetTop + rightPlayer.offsetHeight) speedX = -speedX;
-
-                if (tennisBall.offsetLeft <= 0) {
-                    scoreRightPlayer++;
-                    scoreDiv.innerHTML = `Left Player Score - ${scoreLeftPlayer} : Right Player Score - ${scoreRightPlayer}`;
-                    startBtn.disabled = false;
-                    return;
-                } else if (tennisBall.offsetLeft <= leftPlayer.offsetLeft + leftPlayer.offsetWidth && leftPlayer.offsetTop <= tennisBall.offsetTop && tennisBall.offsetTop <= leftPlayer.offsetTop + leftPlayer.offsetHeight) speedX = -speedX;
-
-
-                if (pressedKeys.has('ShiftLeft') && leftPlayer.offsetTop > 0) leftPlayer.style.top = leftPlayer.offsetTop - 3 + 'px';
-                else if (pressedKeys.has('ControlLeft') && leftPlayer.offsetTop + leftPlayer.offsetHeight < tennisCourt.offsetHeight - 2) leftPlayer.style.top = leftPlayer.offsetTop + 3 + 'px';
-
-                if (pressedKeys.has('ArrowUp') && rightPlayer.offsetTop > 0) rightPlayer.style.top = rightPlayer.offsetTop - 3 + 'px';
-                else if (pressedKeys.has('ArrowDown') && rightPlayer.offsetTop + rightPlayer.offsetHeight < tennisCourt.offsetHeight - 2) rightPlayer.style.top = rightPlayer.offsetTop + 3 + 'px';
-
-                setTimeout(gameOn, 10);
+            if (tennisBall.offsetLeft + tennisBall.offsetWidth >= tennisCourt.offsetWidth) {
+                scoreLeftPlayer++;
+                scoreDiv.innerHTML = `Left Player Score - ${scoreLeftPlayer} : Right Player Score - ${scoreRightPlayer}`;
+                startBtn.disabled = false;
+                tennisBall.style.left = tennisCourt.offsetWidth - tennisBall.offsetWidth - 2 + 'px';
+                return;
+            } else if (rightPlayer.offsetLeft <= tennisBall.offsetLeft + tennisBall.offsetWidth && rightPlayer.offsetTop <= tennisBall.offsetTop && tennisBall.offsetTop <= rightPlayer.offsetTop + rightPlayer.offsetHeight) {
+                tennisBall.style.left = rightPlayer.offsetLeft - tennisBall.offsetWidth + 'px';
+                speedX = -speedX;
             }
+
+            if (tennisBall.offsetLeft <= 0) {
+                scoreRightPlayer++;
+                scoreDiv.innerHTML = `Left Player Score - ${scoreLeftPlayer} : Right Player Score - ${scoreRightPlayer}`;
+                startBtn.disabled = false;
+                tennisBall.style.left = 0 + 'px';
+                return;
+            } else if (tennisBall.offsetLeft <= leftPlayer.offsetLeft + leftPlayer.offsetWidth && leftPlayer.offsetTop <= tennisBall.offsetTop && tennisBall.offsetTop <= leftPlayer.offsetTop + leftPlayer.offsetHeight) {
+                tennisBall.style.left = leftPlayer.offsetLeft + leftPlayer.offsetWidth + 'px';
+                speedX = -speedX;
+            }
+
+
+            if (pressedKeys.has('ShiftLeft') && leftPlayer.offsetTop > 0) leftPlayer.style.top = leftPlayer.offsetTop - 3 + 'px';
+            else if (pressedKeys.has('ControlLeft') && leftPlayer.offsetTop + leftPlayer.offsetHeight < tennisCourt.offsetHeight - 2) leftPlayer.style.top = leftPlayer.offsetTop + 3 + 'px';
+
+            if (pressedKeys.has('ArrowUp') && rightPlayer.offsetTop > 0) rightPlayer.style.top = rightPlayer.offsetTop - 3 + 'px';
+            else if (pressedKeys.has('ArrowDown') && rightPlayer.offsetTop + rightPlayer.offsetHeight < tennisCourt.offsetHeight - 2) rightPlayer.style.top = rightPlayer.offsetTop + 3 + 'px';
+
+            requestAnimationFrame(gameOn);
         }
 
 

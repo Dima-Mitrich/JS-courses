@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div style="position: relative; margin-top: 50px; margin-left: 300px; margin-bottom: 20px;">
+        <div>
+            <button id="startBtn">Start</button>
+            <div id="scoreDiv">Left Player Score - 0 : Right Player Score - 0</div>
+        </div>
+        <div id="counter" style="position: absolute;">...3</div>
+    </div>
+    <div style="position: relative; margin-top: 50px; margin-left: 300px;">
+        <canvas id="canvas" width="700" height="400" style="border: 1px solid #000000;"></canvas>
+    </div>
+
+    <script>
+
+        let canvas = document.getElementById('canvas');
+        let context = canvas.getContext('2d');
+        let courtCenterX = canvas.width / 2;
+        let courtCenterY = canvas.height / 2;
+        let courtWidth = canvas.width;
+        let courtHeight = canvas.height;
+        let playerWidth = 10;
+        let playerHeight = 100;
+        let ballCX = courtCenterX;
+        let ballCY = courtCenterY;
+        let ballRadius = 15;
+        let rightPlayerX = courtWidth - playerWidth;
+        let rightPlayerY = courtHeight - playerHeight;
+        let leftPlayerX = 0;
+        let leftPlayerY = 0;
+        let pressedKeys = new Set;
+        let scoreRightPlayer = 0;
+        let scoreLeftPlayer = 0;
+        let count = 3;
+        let speedY = 2;
+        let speedX = 3;
+        let startBtn = document.getElementById('startBtn');
+        let scoreDiv = document.getElementById('scoreDiv');
+        let counter = document.getElementById('counter');
+
+        document.addEventListener('keydown', keyDown);
+        document.addEventListener('keyup', keyUp);
+        startBtn.addEventListener('click', updatePositions(courtCenterX, courtCenterY, 0, courtHeight - playerHeight));
+        startBtn.addEventListener('click', gameStart);
+        //делаем кнопку недоступной на время игры;
+        startBtn.onclick = function () {
+            startBtn.disabled = true;
+        }
+
+
+        function updatePositions(ballPositionX, ballPositionY, leftPlayerPositionY, rightPlayerPositionY) {
+
+            context.fillStyle = 'rgb(255, 190, 93)';
+            context.fillRect(0, 0, 700, 400);
+
+            context.beginPath();
+            context.arc(ballPositionX, ballPositionY, ballRadius, 0, Math.PI * 2, false);
+            context.fillStyle = 'green';
+            context.fill();
+
+            //leftPlayer
+            context.fillStyle = 'rgb(172, 22, 22)';
+            context.fillRect(0, leftPlayerPositionY, playerWidth, playerHeight);
+
+            //rughtPlayer
+            context.fillStyle = 'rgb(22, 32, 172)';
+            context.fillRect(courtWidth - playerWidth, rightPlayerPositionY, playerWidth, playerHeight);
+
+        }
+
+        updatePositions(ballCX, ballCY, leftPlayerY, rightPlayerY);
+
+        //отсчет до начала игры
+        function gameStart() {
+            counter.innerHTML = `...${count}`;
+            if (count === 0) {
+                count = 3;
+                counter.innerHTML = '';
+                gameOn();
+                return;
+            }
+            count--;
+            let timer = setTimeout(gameStart, 1000);
+        }
+
+
+        function gameOn() {
+
+            ballCX += speedX;
+            ballCY += speedY;
+            updatePositions(ballCX, ballCY, leftPlayerY, rightPlayerY);
+
+            if (ballCY + ballRadius >= courtHeight || ballCY - ballRadius <= 0) {
+                speedY = -speedY;
+            }
+
+            if (ballCX + ballRadius >= courtWidth) {
+                scoreLeftPlayer++;
+                scoreDiv.innerHTML = `Left Player Score - ${scoreLeftPlayer} : Right Player Score - ${scoreRightPlayer}`;
+                startBtn.disabled = false;
+                ballCX = courtCenterX;
+                ballCY = courtCenterY;
+                rightPlayerY = courtHeight - playerHeight;
+                leftPlayerY = 0;
+                return;
+            } else if (rightPlayerX <= ballCX + ballRadius && rightPlayerY <= ballCY + ballRadius && ballCY - ballRadius <= rightPlayerY + playerHeight) {
+                ballCX = rightPlayerX - ballRadius;
+                updatePositions(ballCX, ballCY, leftPlayerY, rightPlayerY);
+                speedX = -speedX;
+            }
+
+            if (ballCX - ballRadius <= 0) {
+                scoreRightPlayer++;
+                scoreDiv.innerHTML = `Left Player Score - ${scoreLeftPlayer} : Right Player Score - ${scoreRightPlayer}`;
+                startBtn.disabled = false;
+                ballCX = courtCenterX;
+                ballCY = courtCenterY;
+                rightPlayerY = courtHeight - playerHeight;
+                leftPlayerY = 0;
+                return;
+            } else if (ballCX - ballRadius <= leftPlayerX + playerWidth && leftPlayerY <= ballCY + ballRadius && ballCY - ballRadius <= leftPlayerY + playerHeight) {
+                ballCX = leftPlayerX + playerWidth + ballRadius;
+                updatePositions(ballCX, ballCY, leftPlayerY, rightPlayerY);
+                speedX = -speedX;
+            }
+
+
+
+            if (pressedKeys.has('ShiftLeft') && leftPlayerY > 0) {
+                leftPlayerY -= 3;
+                updatePositions(ballCX, ballCY, leftPlayerY, rightPlayerY);
+                if (leftPlayerY < 0) leftPlayerY = 0;
+            }
+            else if (pressedKeys.has('ControlLeft') && leftPlayerY + playerHeight < courtHeight) {
+                leftPlayerY += 3;
+                updatePositions(ballCX, ballCY, leftPlayerY, rightPlayerY);
+                if (leftPlayerY + playerHeight > courtHeight) leftPlayerY = courtHeight - playerHeight;
+            }
+
+            if (pressedKeys.has('ArrowUp') && rightPlayerY > 0) {
+                rightPlayerY -= 3;
+                updatePositions(ballCX, ballCY, leftPlayerY, rightPlayerY);
+                if (rightPlayerY < 0) rightPlayerY = 0;
+            }
+            else if (pressedKeys.has('ArrowDown') && rightPlayerY + playerHeight < courtHeight) {
+                rightPlayerY += 3;
+                updatePositions(ballCX, ballCY, leftPlayerY, rightPlayerY);
+                if (rightPlayerY + playerHeight > courtHeight) rightPlayerY = courtHeight - playerHeight;
+            }
+            requestAnimationFrame(gameOn);
+        }
+
+
+        function keyDown(event) {
+            event = event || window.event;
+
+            if (event.code === 'ShiftLeft') pressedKeys.add(event.code);
+
+            if (event.code === 'ControlLeft') pressedKeys.add(event.code);
+
+            if (event.code === 'ArrowUp') pressedKeys.add(event.code);
+
+            if (event.code === 'ArrowDown') pressedKeys.add(event.code);
+        }
+
+
+        function keyUp(event) {
+            event = event || window.event;
+
+            if (event.code === 'ShiftLeft') pressedKeys.delete(event.code);
+
+            if (event.code === 'ControlLeft') pressedKeys.delete(event.code);
+
+            if (event.code === 'ArrowUp') pressedKeys.delete(event.code);
+
+            if (event.code === 'ArrowDown') pressedKeys.delete(event.code);
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div style="position: relative; margin-top: 50px; margin-left: 300px; margin-bottom: 20px;">
+        <div>
+            <button id="startBtn">Start</button>
+            <div id="scoreDiv">Left Player Score - 0 : Right Player Score - 0</div>
+        </div>
+        <div id="counter" style="position: absolute;">...3</div>
+    </div>
+    <div style="position: relative; margin-left: 300px; margin-top: 10px;">
+        <svg width=700 height=400 xmlns='http://www.w3.org/2000/svg'>
+            <rect x=0 y=0 width=700 height=400 fill=darkgoldenrod stroke=black id="field"></rect>
+            <circle r=15 fill=green id="tennisBall"></circle>
+            <rect width=10 height=100 fill=blue id="rightPlayer"></rect>
+            <rect width=10 height=100 fill=red id="leftPlayer"></rect>
+        </svg>
+    </div>
+
+    <script>
+
+        'use strict';
+
+        let tennisCourt = document.getElementById('field');
+        let leftPlayer = document.getElementById('leftPlayer');
+        let rightPlayer = document.getElementById('rightPlayer');
+        let tennisBall = document.getElementById('tennisBall');
+        let startBtn = document.getElementById('startBtn');
+        let scoreDiv = document.getElementById('scoreDiv');
+        let counter = document.getElementById('counter');
+        let ballRadius = parseFloat(tennisBall.getAttribute('r'));
+        let courtWidth = parseFloat(tennisCourt.getAttribute('width'));
+        let courtHeight = parseFloat(tennisCourt.getAttribute('height'));
+        let rightPlayerWidth = parseFloat(rightPlayer.getAttribute('width'));
+        let rightPlayerHeight = parseFloat(rightPlayer.getAttribute('height'));
+        let leftPlayerWidth = parseFloat(leftPlayer.getAttribute('width'));
+        let leftPlayerHeight = parseFloat(leftPlayer.getAttribute('height'));
+        let ballCX;
+        let ballCY;
+        let rightPlayerX;
+        let rightPlayerY;
+        let leftPlayerX;
+        let leftPlayerY;
+        let speedY = 2;
+        let speedX = 3;
+        let pressedKeys = new Set;
+        let scoreRightPlayer = 0;
+        let scoreLeftPlayer = 0;
+        let count = 3;
+
+        function updatePositions() {
+            leftPlayer.setAttribute('y', 0);
+            leftPlayer.setAttribute('x', 0);
+            rightPlayer.setAttribute('y', courtHeight - rightPlayerHeight);
+            rightPlayer.setAttribute('x', courtWidth - rightPlayerWidth);
+            tennisBall.setAttribute('cy', courtHeight / 2);
+            tennisBall.setAttribute('cx', courtWidth / 2);;
+        }
+
+        updatePositions();
+
+        document.addEventListener('keydown', keyDown);
+        document.addEventListener('keyup', keyUp);
+        startBtn.addEventListener('click', updatePositions);
+        startBtn.addEventListener('click', gameStart);
+        //делаем кнопку недоступной на время игры;
+        startBtn.onclick = function () {
+            startBtn.disabled = true;
+        }
+
+        //отсчет до начала игры
+        function gameStart() {
+            counter.innerHTML = `...${count}`;
+            if (count === 0) {
+                count = 3;
+                counter.innerHTML = '';
+                gameOn();
+                return;
+            }
+            count--;
+            let timer = setTimeout(gameStart, 1000);
+        }
+
+
+        function gameOn() {
+
+            ballCY = parseFloat(tennisBall.getAttribute('cy')) + speedY;
+            ballCX = parseFloat(tennisBall.getAttribute('cx')) + speedX;
+            rightPlayerX = parseFloat(rightPlayer.getAttribute('x'));
+            rightPlayerY = parseFloat(rightPlayer.getAttribute('y'));
+            leftPlayerX = parseFloat(leftPlayer.getAttribute('x'));
+            leftPlayerY = parseFloat(leftPlayer.getAttribute('y'));
+
+            tennisBall.setAttribute('cy', ballCY);
+            tennisBall.setAttribute('cx', ballCX);
+
+            if (ballCY + ballRadius >= courtHeight || ballCY - ballRadius <= 0) {
+                speedY = -speedY;
+            }
+
+            if (ballCX + ballRadius >= courtWidth) {
+                scoreLeftPlayer++;
+                scoreDiv.innerHTML = `Left Player Score - ${scoreLeftPlayer} : Right Player Score - ${scoreRightPlayer}`;
+                startBtn.disabled = false;
+                return;
+            } else if (rightPlayerX <= ballCX + ballRadius && rightPlayerY <= ballCY + ballRadius && ballCY - ballRadius <= rightPlayerY + rightPlayerHeight) {
+                tennisBall.setAttribute('cx', rightPlayerX - ballRadius);
+                speedX = -speedX;
+            }
+
+            if (ballCX - ballRadius <= 0) {
+                scoreRightPlayer++;
+                scoreDiv.innerHTML = `Left Player Score - ${scoreLeftPlayer} : Right Player Score - ${scoreRightPlayer}`;
+                startBtn.disabled = false;
+                return;
+            } else if (ballCX - ballRadius <= leftPlayerX + leftPlayerWidth && leftPlayerY <= ballCY + ballRadius && ballCY - ballRadius <= leftPlayerY + leftPlayerHeight) {
+                tennisBall.setAttribute('cx', leftPlayerX + leftPlayerWidth + ballRadius);
+                speedX = -speedX;
+            }
+
+
+            if (pressedKeys.has('ShiftLeft') && leftPlayerY > 0) leftPlayer.setAttribute('y', leftPlayerY - 3);
+            else if (pressedKeys.has('ControlLeft') && leftPlayerY + leftPlayerHeight < courtHeight) leftPlayer.setAttribute('y', leftPlayerY + 3);
+
+            if (pressedKeys.has('ArrowUp') && rightPlayerY > 0) rightPlayer.setAttribute('y', rightPlayerY - 3);
+            else if (pressedKeys.has('ArrowDown') && rightPlayerY + rightPlayerHeight < courtHeight) rightPlayer.setAttribute('y', rightPlayerY + 3);
+
+            requestAnimationFrame(gameOn);
+
+        }
+
+
+        function keyDown(event) {
+            event = event || window.event;
+
+            if (event.code === 'ShiftLeft') pressedKeys.add(event.code);
+
+            if (event.code === 'ControlLeft') pressedKeys.add(event.code);
+
+            if (event.code === 'ArrowUp') pressedKeys.add(event.code);
+
+            if (event.code === 'ArrowDown') pressedKeys.add(event.code);
+        }
+
+
+        function keyUp(event) {
+            event = event || window.event;
+
+            if (event.code === 'ShiftLeft') pressedKeys.delete(event.code);
+
+            if (event.code === 'ControlLeft') pressedKeys.delete(event.code);
+
+            if (event.code === 'ArrowUp') pressedKeys.delete(event.code);
+
+            if (event.code === 'ArrowDown') pressedKeys.delete(event.code);
+        }
+
+    </script>
+</body>
+
+</html>
