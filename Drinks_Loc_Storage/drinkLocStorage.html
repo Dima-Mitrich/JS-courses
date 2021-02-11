@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div style="position: relative; margin-left: 50px;">
+        <input type="button" id="addDrink" value="Добавить напиток">;
+        <input type="button" id="showDrink" value="Найти напиток">;
+        <input type="button" id="deleteDrink" value="Удалить напиток">;
+        <input type="button" id="listDrinks" value="Показать напитки">;
+    </div>
+
+    <div style="position: relative; margin-top: 20px; margin-left: 50px;">
+        <input type="button" id="addFood" value="Добавить блюдо">;
+        <input type="button" id="showFood" value="Найти блюдо">;
+        <input type="button" id="deleteFood" value="Удалить блюдо">;
+        <input type="button" id="listFood" value="Показать блюдо">;
+    </div>
+
+    <script>
+
+        "use strict";
+
+        class LocalStorageFunc {
+
+            constructor(itemName) {
+                this.storage = JSON.parse(localStorage.getItem(`${itemName}`)) || {};
+                this.name = itemName;
+            }
+
+            addValue(key, value) {
+                this.storage[key] = value;
+                localStorage.setItem(`${this.name}`, JSON.stringify(this.storage));
+            }
+
+            getValue(key) {
+                return this.storage[key];
+            }
+
+            deleteValue(key) {
+                if (key in this.storage) {
+                    delete this.storage[key];
+                    localStorage.setItem(`${this.name}`, JSON.stringify(this.storage));
+                    return true;
+                } else return false;
+            }
+
+            getKeys() {
+                let arrKeys = [];
+
+                for (let key in this.storage) {
+                    arrKeys.push(key);
+                }
+                return arrKeys;
+            }
+        }
+
+        let drinkStorage = new LocalStorageFunc('drinks');
+
+
+        addDrink.onclick = function () {
+
+            function createName() {
+                return prompt("Введите имя напитка").toLowerCase();
+            }
+
+            function createInfo() {
+                let drinkInfo = {};
+                drinkInfo.alko = confirm("Алкогольный?");
+                drinkInfo.ingr = {};
+
+                let i = 0;
+                do {
+                    let ingrName = prompt("Введите название ингридиента");
+                    let ingrSize = prompt("Введите количество");
+                    drinkInfo.ingr[ingrName] = ingrSize;
+                    i++;
+                } while (confirm("Добавить ингридиент?") || i == 7);
+
+                drinkInfo.mixed = confirm("Смешать?");
+                return drinkInfo;
+            }
+
+            drinkStorage.addValue(createName(), createInfo());
+        }
+
+
+        showDrink.onclick = function () {
+            let name = prompt("Какой напиток вы ищите?").toLowerCase();
+            let drink = drinkStorage.getValue(name);
+            if (drink) {
+                console.log(`Название: ${name}\nАлкогольный: ${(drink.alko) ? "Да" : "Нет"}\nРецепт:`);
+                for (let key in drink.ingr) {
+                    console.log(`  ${key}: ${drink.ingr[key]};`);
+                }
+                console.log(`Смешать: ${(drink.mixed) ? "Да" : "Нет"}`);
+            } else {
+                console.log("Такого напитка нет");
+            }
+        }
+
+
+        deleteDrink.onclick = function () {
+            let name = prompt("Какой напиток удалить?");
+            (drinkStorage.deleteValue(name)) ? console.log(`Напиток ${name} удален`) : console.log(`Напиток ${name} не найден`);
+        }
+
+
+        listDrinks.onclick = function () {
+
+            let arr = drinkStorage.getKeys();
+            for (let name of arr) {
+                console.log(name);
+            }
+        }
+
+
+
+        let foodStorage = new LocalStorageFunc('food');
+
+        addFood.onclick = function () {
+
+            function createName() {
+                return prompt("Введите имя блюда").toLowerCase();
+            }
+
+            function createInfo() {
+                let foodInfo = {};
+                foodInfo.spicy = confirm("Острое?");
+                foodInfo.ingr = {};
+
+                let i = 0;
+                do {
+                    let ingrName = prompt("Введите название ингридиента");
+                    let ingrSize = prompt("Введите количество");
+                    foodInfo.ingr[ingrName] = ingrSize;
+                    i++;
+                } while (confirm("Добавить ингридиент?") || i == 7);
+
+                foodInfo.mixed = confirm("Смешать?");
+                return foodInfo;
+            }
+
+            foodStorage.addValue(createName(), createInfo());
+        }
+
+
+        showFood.onclick = function () {
+            let name = prompt("Какое блюдо вы ищите?").toLowerCase();
+            let food = foodStorage.getValue(name);
+            if (food) {
+                console.log(`Название: ${name}\nОстрый: ${(food.spicy) ? "Да" : "Нет"}\nРецепт:`);
+                for (let key in food.ingr) {
+                    console.log(`  ${key}: ${food.ingr[key]};`);
+                }
+                console.log(`Смешать: ${(food.mixed) ? "Да" : "Нет"}`);
+            } else {
+                console.log("Такого напитка нет");
+            }
+        }
+
+
+        deleteFood.onclick = function () {
+            let name = prompt("Какое блюдо удалить?");
+            (drinkStorage.deleteValue(name)) ? console.log(`Блюдо ${name} удалено`) : console.log(`блюдо ${name} не найдено`);
+        }
+
+
+        listFood.onclick = function () {
+
+            let arr = foodStorage.getKeys();
+            for (let name of arr) {
+                console.log(name);
+            }
+        }
+
+    </script>
+</body>
+
+</html>
