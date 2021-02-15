@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <div style="width:30%; margin: 0%; float: right;">
+            <div id="mainContainer1">
+                <span>Berlin (GMT+1)</span>
+                <button class="start">Start</button>
+                <button class="stop">Stop</button>
+                <div style="background-color: darkgoldenrod; border-radius: 50%; width: 300px; height: 300px; position: relative; margin: 20px;"
+                    id="clock1">
+                </div>
+            </div>
+
+            <div id="mainContainer2">
+                <span>Vladivostok (GMT+10)</span>
+                <button class="start">Start</button>
+                <button class="stop">Stop</button>
+                <div style="background-color: darkgoldenrod; border-radius: 50%; width: 300px; height: 300px; position: relative; margin: 20px;"
+                    id="clock2">
+                </div>
+            </div>
+        </div>
+
+        <div style="width: 30%; margin: 0%; float: right;">
+            <div id="mainContainer3" style="height: 350px;">
+                <span>London (GMT)</span>
+                <button class="start">Start</button>
+                <button class="stop">Stop</button>
+                <svg width=400 height=400 xmlns='http://www.w3.org/2000/svg' id="svg1">
+                    <circle cx=170 cy=170 r=150 fill=darkgoldenrod id="clock3" class="clock"></circle>
+                </svg>
+            </div>
+
+            <div id="mainContainer4">
+                <span>Tokio (GMT+9)</span>
+                <button class="start">Start</button>
+                <button class="stop">Stop</button>
+                <svg width=400 height=400 xmlns='http://www.w3.org/2000/svg' id="svg2">
+                    <circle cx=170 cy=170 r=150 fill=darkgoldenrod id="clock4" class="clock"></circle>
+                </svg>
+            </div>
+        </div>
+
+
+        <div style="width: 30%; padding-left: 10%;">
+            <div id="mainContainer5">
+                <span>New-York (GMT-5)</span>
+                <button class="start" style="margin-bottom: 15px;">Start</button>
+                <button class="stop">Stop</button>
+                <canvas id="clock5" width="300" height="300"></canvas>
+            </div>
+
+            <div id="mainContainer6">
+                <span>Minsk (GMT+3)</span>
+                <button class="start" style="margin-bottom: 15px;">Start</button>
+                <button class="stop">Stop</button>
+                <canvas id="clock6" width="300" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+</script>
+<script src="clock.js"></script>
+<script src="clockViewDom.js"></script>
+<script src="ClockConrolerButtons.js"></script>
+<script src="ClockViewSVG.js"></script>
+<script src="ClockViewCanvas.js"></script>
+<script>
+
+    "use strict";
+
+    //DOM часы №1
+    (function () {
+        let mainContainer1 = document.getElementById('mainContainer1')
+        let clock = document.getElementById('clock1');
+        clock.setAttribute('class', 'clock3');
+        mainContainer1.appendChild(clock);
+        let radius = clock.offsetWidth / 2;
+        let clockCenterX = clock.offsetWidth - radius;
+        let clockCenterY = clock.offsetHeight - radius;
+        let oneHourAngle = 120; //градус соответствующий "диву" на один час. От него строим все остальные дивы в цикле прибавляя по 30 градусов
+
+        //функция для конвертирования градусов в радианы
+        function convertInRad(grad) {
+            return grad * Math.PI / 180;
+        }
+
+        //создаем цифры на часах
+        for (let i = 1; i <= 12; i++) {
+            let hour = document.createElement('div');
+            clock.appendChild(hour);
+            hour.innerHTML = i;
+            hour.style.width = 30 + 'px';
+            hour.style.height = 30 + 'px';
+            hour.style.borderRadius = 50 + '%';
+            hour.style.position = 'absolute';
+            hour.style.color = 'white';
+            hour.style.display = 'flex';
+            hour.style.justifyContent = 'center'
+            hour.style.alignItems = 'center';
+            let hourCenterX = clockCenterX - hour.offsetWidth / 2 - 0.87 * radius * Math.cos(convertInRad(oneHourAngle));
+            let hourCenterY = clockCenterY - hour.offsetHeight / 2 - 0.87 * radius * Math.sin(convertInRad(oneHourAngle));
+            hour.style.top = hourCenterY + 'px';
+            hour.style.left = hourCenterX + 'px';
+            hour.style.backgroundColor = 'gray';
+            oneHourAngle += 30;
+        }
+
+
+        function buildArrow(arrowWidth, arrowHeight) {
+            let arrowName = document.createElement('div');
+            arrowName.style.width = arrowWidth + 'px';
+            arrowName.style.height = arrowHeight + 'px';
+            arrowName.style.backgroundColor = 'black';
+            arrowName.style.borderRadius = 40 + '%';
+            clock.appendChild(arrowName);
+            arrowName.style.position = 'absolute';
+            arrowName.style.top = clockCenterY - arrowName.offsetHeight * 0.9 + 'px';
+            arrowName.style.left = clockCenterX - arrowName.offsetWidth / 2 + 'px';
+            arrowName.style.transformOrigin = '50% 90%';      //задаем стрелкам точку вращения
+            return arrowName;
+        }
+
+        //создаем стрелки с понравившимися парметрами
+        let hourArrow = buildArrow(10, 130);
+        hourArrow.className = 'hourArrow';
+        let minuteArrow = buildArrow(5, 140);
+        minuteArrow.className = 'minuteArrow';
+        let secondArrow = buildArrow(2, 145);
+        secondArrow.className = 'secondArrow';
+
+        let dateDiv = document.createElement('div');
+        dateDiv.style.position = 'absolute';
+        dateDiv.style.top = clockCenterY - 0.2 * clock.offsetHeight + 'px';
+        dateDiv.style.left = clockCenterX - dateDiv.offsetWidth / 2 + 'px';
+        dateDiv.className = 'dateDiv';
+        clock.appendChild(dateDiv);
+
+
+
+        let clockModel1 = new Clock(1);
+        let cont1 = new ClockControlButtons();
+        let view1 = new ClockViewDom();
+        cont1.start(clockModel1, mainContainer1);
+        clockModel1.start(view1);
+        view1.start(clockModel1, mainContainer1);
+        document.addEventListener('DOMContentLoaded', clockModel1.tick());
+    })();
+
+
+    //DOM часы №2----------------------------------------------------
+    (function () {
+        let mainContainer1 = document.getElementById('mainContainer2')
+        let clock = document.getElementById('clock2');
+        mainContainer1.appendChild(clock);
+        let radius = clock.offsetWidth / 2;
+        let clockCenterX = clock.offsetWidth - radius;
+        let clockCenterY = clock.offsetHeight - radius;
+        let oneHourAngle = 120; //градус соответствующий "диву" на один час. От него строим все остальные дивы в цикле прибавляя по 30 градусов
+
+        //функция для конвертирования градусов в радианы
+        function convertInRad(grad) {
+            return grad * Math.PI / 180;
+        }
+
+        //создаем цифры на часах
+        for (let i = 1; i <= 12; i++) {
+            let hour = document.createElement('div');
+            clock.appendChild(hour);
+            hour.innerHTML = i;
+            hour.style.width = 30 + 'px';
+            hour.style.height = 30 + 'px';
+            hour.style.borderRadius = 50 + '%';
+            hour.style.position = 'absolute';
+            hour.style.color = 'white';
+            hour.style.display = 'flex';
+            hour.style.justifyContent = 'center'
+            hour.style.alignItems = 'center';
+            let hourCenterX = clockCenterX - hour.offsetWidth / 2 - 0.87 * radius * Math.cos(convertInRad(oneHourAngle));
+            let hourCenterY = clockCenterY - hour.offsetHeight / 2 - 0.87 * radius * Math.sin(convertInRad(oneHourAngle));
+            hour.style.top = hourCenterY + 'px';
+            hour.style.left = hourCenterX + 'px';
+            hour.style.backgroundColor = 'gray';
+            oneHourAngle += 30;
+        }
+
+
+        function buildArrow(arrowWidth, arrowHeight) {
+            let arrowName = document.createElement('div');
+            arrowName.style.width = arrowWidth + 'px';
+            arrowName.style.height = arrowHeight + 'px';
+            arrowName.style.backgroundColor = 'black';
+            arrowName.style.borderRadius = 40 + '%';
+            clock.appendChild(arrowName);
+            arrowName.style.position = 'absolute';
+            arrowName.style.top = clockCenterY - arrowName.offsetHeight * 0.9 + 'px';
+            arrowName.style.left = clockCenterX - arrowName.offsetWidth / 2 + 'px';
+            arrowName.style.transformOrigin = '50% 90%';      //задаем стрелкам точку вращения
+            return arrowName;
+        }
+
+        //создаем стрелки с понравившимися парметрами
+        let hourArrow = buildArrow(10, 130);
+        hourArrow.className = 'hourArrow';
+        let minuteArrow = buildArrow(5, 140);
+        minuteArrow.className = 'minuteArrow';
+        let secondArrow = buildArrow(2, 145);
+        secondArrow.className = 'secondArrow';
+
+        let dateDiv = document.createElement('div');
+        dateDiv.style.position = 'absolute';
+        dateDiv.style.top = clockCenterY - 0.2 * clock.offsetHeight + 'px';
+        dateDiv.style.left = clockCenterX - dateDiv.offsetWidth / 2 + 'px';
+        dateDiv.className = 'dateDiv';
+        clock.appendChild(dateDiv);
+
+
+
+        let clockModel1 = new Clock(10);
+        let cont1 = new ClockControlButtons();
+        let view1 = new ClockViewDom();
+        cont1.start(clockModel1, mainContainer1);
+        clockModel1.start(view1);
+        view1.start(clockModel1, mainContainer1);
+        document.addEventListener('DOMContentLoaded', clockModel1.tick());
+    })();
+
+
+    //SVG часы №1---------------------------------------------
+    (function () {
+        let mainContainer = document.getElementById('mainContainer3');
+        let svg = document.getElementById('svg1');
+        let clock = document.getElementById('clock3');
+        let clockCenterX = parseFloat(clock.getAttribute('cx'));
+        let clockCenterY = parseFloat(clock.getAttribute('cy'));
+        let clockRadius = parseFloat(clock.getAttribute('r'));
+        let oneHourAngle = 120;
+
+        function convertInRad(grad) {
+            return grad * Math.PI / 180;
+        }
+
+        for (let i = 1; i <= 12; i++) {
+            let hour = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+            hour.setAttribute('cy', clockCenterY - 0.85 * clockRadius * Math.sin(convertInRad(oneHourAngle)));
+            hour.setAttribute('cx', clockCenterX - 0.85 * clockRadius * Math.cos(convertInRad(oneHourAngle)));
+            hour.setAttribute('r', 15);
+            hour.setAttribute('fill', 'gray');
+            svg.appendChild(hour);
+            let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('y', hour.getAttribute('cy'));
+            text.setAttribute('x', hour.getAttribute('cx'));
+            text.setAttribute('text-anchor', 'middle');
+            text.setAttribute('fill', 'white');
+            text.innerHTML = i;
+            svg.appendChild(text);
+            oneHourAngle += 30;
+        }
+
+        function buildArrow(arrowWidth, arrowHeight) {
+            let arrow = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            arrow.setAttribute('x1', clockCenterX);
+            arrow.setAttribute('y1', clockCenterY + 10);
+            arrow.setAttribute('x2', clockCenterX);
+            arrow.setAttribute('y2', clockCenterY - arrowHeight);
+            arrow.setAttribute('stroke', 'black');
+            arrow.setAttribute('stroke-width', arrowWidth);
+            arrow.setAttribute('stroke-linecap', 'round');
+            svg.appendChild(arrow);
+            return arrow;
+        }
+
+        let minuteArrow = buildArrow(5, 120);
+        minuteArrow.setAttribute('class', 'minuteArrow');
+        let hourArrow = buildArrow(8, 110);
+        hourArrow.setAttribute('class', 'hourArrow');
+        let secondArrow = buildArrow(2, 130);
+        secondArrow.setAttribute('class', 'secondArrow');
+
+        let timeContainer = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        timeContainer.setAttribute('x', clockCenterX - 53);
+        timeContainer.setAttribute('y', clockCenterY - 40);
+        timeContainer.setAttribute('font-size', '30');
+        timeContainer.setAttribute('class', 'dateDiv');
+        svg.appendChild(timeContainer);
+
+
+
+        let clockModel1 = new Clock(0);
+        let cont1 = new ClockControlButtons();
+        let view1 = new ClockViewSVG();
+        cont1.start(clockModel1, mainContainer);
+        clockModel1.start(view1);
+        view1.start(clockModel1, mainContainer);
+        document.addEventListener('DOMContentLoaded', clockModel1.tick());
+    })();
+
+
+    //SVG часы №2---------------------------------------------
+    (function () {
+        let mainContainer = document.getElementById('mainContainer4');
+        let svg = document.getElementById('svg2');
+        let clock = document.getElementById('clock4');
+        let clockCenterX = parseFloat(clock.getAttribute('cx'));
+        let clockCenterY = parseFloat(clock.getAttribute('cy'));
+        let clockRadius = parseFloat(clock.getAttribute('r'));
+        let oneHourAngle = 120;
+
+        function convertInRad(grad) {
+            return grad * Math.PI / 180;
+        }
+
+        for (let i = 1; i <= 12; i++) {
+            let hour = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+            hour.setAttribute('cy', clockCenterY - 0.85 * clockRadius * Math.sin(convertInRad(oneHourAngle)));
+            hour.setAttribute('cx', clockCenterX - 0.85 * clockRadius * Math.cos(convertInRad(oneHourAngle)));
+            hour.setAttribute('r', 15);
+            hour.setAttribute('fill', 'gray');
+            svg.appendChild(hour);
+            let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('y', hour.getAttribute('cy'));
+            text.setAttribute('x', hour.getAttribute('cx'));
+            text.setAttribute('text-anchor', 'middle');
+            text.setAttribute('fill', 'white');
+            text.innerHTML = i;
+            svg.appendChild(text);
+            oneHourAngle += 30;
+        }
+
+        function buildArrow(arrowWidth, arrowHeight) {
+            let arrow = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            arrow.setAttribute('x1', clockCenterX);
+            arrow.setAttribute('y1', clockCenterY + 10);
+            arrow.setAttribute('x2', clockCenterX);
+            arrow.setAttribute('y2', clockCenterY - arrowHeight);
+            arrow.setAttribute('stroke', 'black');
+            arrow.setAttribute('stroke-width', arrowWidth);
+            arrow.setAttribute('stroke-linecap', 'round');
+            svg.appendChild(arrow);
+            return arrow;
+        }
+
+        let minuteArrow = buildArrow(5, 120);
+        minuteArrow.setAttribute('class', 'minuteArrow');
+        let hourArrow = buildArrow(8, 110);
+        hourArrow.setAttribute('class', 'hourArrow');
+        let secondArrow = buildArrow(2, 130);
+        secondArrow.setAttribute('class', 'secondArrow');
+
+        let timeContainer = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        timeContainer.setAttribute('x', clockCenterX - 53);
+        timeContainer.setAttribute('y', clockCenterY - 40);
+        timeContainer.setAttribute('font-size', '30');
+        timeContainer.setAttribute('class', 'dateDiv');
+        svg.appendChild(timeContainer);
+
+
+
+        let clockModel1 = new Clock(9);
+        let cont1 = new ClockControlButtons();
+        let view1 = new ClockViewSVG();
+        cont1.start(clockModel1, mainContainer);
+        clockModel1.start(view1);
+        view1.start(clockModel1, mainContainer);
+        document.addEventListener('DOMContentLoaded', clockModel1.tick());
+    })();
+
+
+    //Canvas часы №1-----------------------------
+    (function () {
+        let mainContainer = document.getElementById('mainContainer5');
+        let clockModel1 = new Clock(-5);
+        let cont1 = new ClockControlButtons();
+        let view1 = new ClockViewCanvas();
+        cont1.start(clockModel1, mainContainer);
+        clockModel1.start(view1);
+        view1.start(clockModel1, mainContainer);
+        document.addEventListener('DOMContentLoaded', clockModel1.tick());
+    })();
+
+
+    //Canvas часы №2-----------------------------
+    (function () {
+        let mainContainer = document.getElementById('mainContainer6');
+        let clockModel1 = new Clock(3);
+        let cont1 = new ClockControlButtons();
+        let view1 = new ClockViewCanvas();
+        cont1.start(clockModel1, mainContainer);
+        clockModel1.start(view1);
+        view1.start(clockModel1, mainContainer);
+        document.addEventListener('DOMContentLoaded', clockModel1.tick());
+    })();
+
+</script>
+
+</html>
