@@ -18,7 +18,7 @@ function ClockControlButtons() {
     }
 
     this.pusk = function () {
-        myModel.tick();
+        if (!myModel.isTick) myModel.tick();
     }
 
     this.stop = function () {

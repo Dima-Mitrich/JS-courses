@@ -8,6 +8,7 @@ function Clock(timezone) {
     this.seconds = null;
     let myView = null;
     let timer;
+    this.isTick = false;
 
     this.start = function (view) {
         myView = view;
@@ -26,12 +27,14 @@ function Clock(timezone) {
         else if (this.hours == 24) this.hours = 0;
         this.minutes = this.currTime.getUTCMinutes();
         this.seconds = this.currTime.getUTCSeconds();
+        this.isTick = true;
         this.updateView();
         timer = setTimeout(() => this.tick(), 1000 - this.currTime.getMilliseconds());
     }
 
     this.stop = function () {
         clearTimeout(timer);
+        this.isTick = false;
     }
 
 }
