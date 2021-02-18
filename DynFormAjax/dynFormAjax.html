@@ -21,14 +21,16 @@
         function buildForm1() {
             $.ajax({
                 url: ajaxHandlerScript, type: 'POST', cache: false, dataType: 'json',
-                data: { f: 'READ', n: 'MITRICHENKO_DynFormAjax_formDef1' }, success: readyToRead
+                data: { f: 'READ', n: 'MITRICHENKO_DynFormAjax_formDef1' }, success: readyToRead,
+                error: errorHandler
             });
         }
 
         function buildForm2() {
             $.ajax({
                 url: ajaxHandlerScript, type: 'POST', cache: false, dataType: 'json',
-                data: { f: 'READ', n: 'MITRICHENKO_DynFormAjax_formDef2' }, success: readyToRead
+                data: { f: 'READ', n: 'MITRICHENKO_DynFormAjax_formDef2' }, success: readyToRead,
+                error: errorHandler
             });
         }
 
@@ -37,6 +39,10 @@
             else if (callresult.result != '') {
                 dynForm(tag, (JSON.parse(callresult.result)));
             }
+        }
+
+        function errorHandler(error) {
+            console.log(error);
         }
 
 
