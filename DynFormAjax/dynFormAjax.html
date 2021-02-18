@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <button id='btn1'>Форма №1</button>
+    <button id='btn2'>Форма №2</button>
+
+    <script src='http://fe.it-academy.by/JQ/jquery.js'></script>
+    <script>
+
+        let ajaxHandlerScript = "https://fe.it-academy.by/AjaxStringStorage2.php";
+        let tag = 'form';
+
+        function buildForm1() {
+            $.ajax({
+                url: ajaxHandlerScript, type: 'POST', cache: false, dataType: 'json',
+                data: { f: 'READ', n: 'MITRICHENKO_DynFormAjax_formDef1' }, success: readyToRead
+            });
+        }
+
+        function buildForm2() {
+            $.ajax({
+                url: ajaxHandlerScript, type: 'POST', cache: false, dataType: 'json',
+                data: { f: 'READ', n: 'MITRICHENKO_DynFormAjax_formDef2' }, success: readyToRead
+            });
+        }
+
+        function readyToRead(callresult) {
+            if (callresult.error != undefined) console.log(callresult.error);
+            else if (callresult.result != '') {
+                dynForm(tag, (JSON.parse(callresult.result)));
+            }
+        }
+
+
+        function dynForm(teg, arr) {
+            let form = document.createElement(teg);
+            form.action = 'https://fe.it-academy.by/TestForm.php'
+            let label;
+            let input;
+            let div;
+
+            for (let i = 0; i < arr.length; i++) {
+
+                if (arr[i].kind === 'longtext') {
+                    label = document.createElement('label');
+                    input = document.createElement('input');
+                    div = document.createElement('div');
+                    input.name = arr[i].name
+                    label.htmlFor = input.name;
+                    label.innerHTML = arr[i].label;
+                    input.type = 'text';
+                    input.size = '40';
+                    form.appendChild(div);
+                    div.appendChild(label);
+                    div.appendChild(input);
+                }
+
+                else if (arr[i].kind === 'shorttext') {
+                    label = document.createElement('label');
+                    input = document.createElement('input');
+                    div = document.createElement('div');
+                    input.name = arr[i].name
+                    label.htmlFor = input.name;
+                    label.innerHTML = arr[i].label;
+                    input.name = arr[i].name;
+                    input.type = 'text';
+                    input.size = '20';
+                    form.appendChild(div);
+                    div.appendChild(label);
+                    div.appendChild(input);
+                }
+
+                else if (arr[i].kind === 'number') {
+                    label = document.createElement('label');
+                    input = document.createElement('input');
+                    div = document.createElement('div');
+                    input.name = arr[i].name;
+                    label.htmlFor = input.name;
+                    label.innerHTML = arr[i].label;
+                    input.type = 'number';
+                    input.size = '40';
+                    form.appendChild(div);
+                    div.appendChild(label);
+                    div.appendChild(input);
+                }
+
+                else if (arr[i].kind === 'submit') {
+                    let button = document.createElement('button');
+                    button.type = 'submit';
+                    button.innerHTML = arr[i].label;
+                    form.appendChild(button);
+                }
+
+                else if (arr[i].kind === 'combo') {
+                    div = document.createElement('div');
+                    label = document.createElement('label');
+                    let select = document.createElement('select');
+                    select.name = arr[i].name;
+                    label.htmlFor = select.name;
+                    label.innerHTML = arr[i].label;
+                    let option;
+                    for (let n = 0; n < arr[i].variants.length; n++) {
+                        option = document.createElement('option');
+                        option.value = n + 1;
+                        option.innerHTML = arr[i].variants[n].text;
+                        select.appendChild(option);
+                    }
+                    div.appendChild(label);
+                    div.appendChild(select);
+                    form.appendChild(div);
+                }
+
+                else if (arr[i].kind === 'radio') {
+                    div = document.createElement('div');
+                    div.innerHTML = arr[i].label;
+                    for (let n = 0; n < arr[i].variants.length; n++) {
+                        input = document.createElement('input');
+                        label = document.createElement('label');
+                        label.innerHTML = arr[i].variants[n].text;
+                        input.type = 'radio';
+                        input.name = arr[i].name;
+                        input.value = arr[i].variants[n].value;
+                        label.prepend(input);
+                        div.appendChild(label);
+                    }
+                    form.appendChild(div);
+                }
+
+                else if (arr[i].kind === 'check') {
+                    div = document.createElement('div');
+                    label = document.createElement('label');
+                    input = document.createElement('input');
+                    input.name = arr[i].name;
+                    label.htmlFor = input.name;
+                    label.innerHTML = arr[i].label;
+                    input.type = 'checkbox';
+                    div.appendChild(label);
+                    div.appendChild(input);
+                    form.appendChild(div);
+                }
+
+                else if (arr[i].kind === 'memo') {
+                    div = document.createElement('div');
+                    label = document.createElement('label');
+                    let textarea = document.createElement('textarea');
+                    textarea.name = arr[i].name;
+                    label.htmlFor = textarea.name;
+                    label.innerHTML = arr[i].label;
+                    div.appendChild(label);
+                    div.appendChild(textarea);
+                    form.appendChild(div);
+                }
+            }
+            document.body.append(form);
+        }
+
+        let btn1 = document.getElementById('btn1');
+        let btn2 = document.getElementById('btn2');
+
+        btn1.onclick = buildForm1;
+
+        btn2.onclick = buildForm2;
+
+    </script>
+</body>
+
+</html>
