@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="stylesheets.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="mainMenu"> 
+        <img src="images/sleepMoon.png">
+        <input id="nickname" placeholder="Enter your nickname" type="text">
+        <input type="button" id="gameStart" value="Start new game">
+        <input type="button" id="scoreTable" value="Top scores" disabled>
+    </div>
+
+    <div id="gameOver">
+        <div id="gameOverPicture"></div>
+        <span id="gameOverScore">Your final score: </span>
+        <input type="button" value='Back to menu' id="backToMenu">
+    </div>
+
+    <div id="playGame">
+        <div id="space">
+            <div id="moon">
+                <svg width=100% height=100% xmlns='http://www.w3.org/2000/svg'>
+                    <ellipse fill=black cx=50% cy=75% rx=10 ry=2 id="mouth" />
+                </svg>
+            </div>
+            <hr id="line">
+            <div id="rocket">
+            </div>
+            <svg width=100% height=100% xmlns='http://www.w3.org/2000/svg'>
+                <defs>
+                    <clipPath id="mask">
+                        <rect x=0 y=0 width=100.3% height=100.3% />
+                    </clipPath>
+                </defs>
+            </svg>
+            <div id="boom">
+                <canvas id="myCanvas" width="120px" height="90px"></canvas>
+            </div>
+            <div id="boom1">
+                <canvas id="myCanvas1" width="60px" height="60px"></canvas>
+            </div>
+            <div id="points" class="classStart"></div>
+        </div>
+
+        <div id="scoreContainer">
+            <span>Your Score: </span> 
+            <div id="scoreCounter">0</div>
+        </div>
+
+        <div id="userLifes">
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+        </div>
+    </div>
+
+    <div id="topScores">
+        <button id="closeScoreTable">X</button>
+    </div>
+    
+</body>
+
+<script src="smallMoon.js"></script>
+<script src="mainMoon.js"></script>
+<script src="theRocket.js"></script>
+<script src="points.js"></script>
+<script src="main.js"></script>
+<script src="ajax.js"></script>
+
+</html>

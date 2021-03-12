@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="stylesheets.css" rel="stylesheet">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="boom1">
+    <canvas id="myCanvas1" width="60px" height="60px"></canvas>
+  </div>
+
+  <input type="button" id="btn" value="click">
+</body>
+<script>
+
+  let myCanvas = document.getElementById('myCanvas1');
+  let theBoom = document.getElementById('boom1');
+  let ctx = myCanvas.getContext('2d');
+  let frames = 8;
+  let currentFrame = 0;
+  let spriteImg = new Image();
+  spriteImg.src = 'images/boomMoon.png';
+  let btn = document.getElementById('btn');
+
+
+
+  function destriy() {
+    theBoom.style.top = 50 + 'px';
+    theBoom.style.left = 50 + 'px';
+    theBoom.style.display = 'block';
+
+    function boom() {
+      let drawTimer;
+      ctx.clearRect(0, 0, 60, 60);
+      ctx.drawImage(spriteImg, 0, 60 * currentFrame, 60, 60, 0, 0, 60, 60);
+
+      if (currentFrame == frames) {
+        currentFrame = 0;
+        clearTimeout(drawTimer);
+        theBoom.style.display = 'none';
+        return;
+      } else {
+        currentFrame++;
+      }
+      drawTimer = setTimeout(boom, 60);
+    }
+    boom();
+  }
+
+  btn.onclick = destriy();
+
+</script>
+
+</html>
