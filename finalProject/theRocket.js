@@ -58,7 +58,7 @@ function TheRocket(rocket) {
         pusk();
     }
 
-
+    //рисуем взрыв
     let boomDraw = function (x, y) {
         theBoom.style.top = y + theBoom.offsetHeight / 2 + 'px';
         theBoom.style.left = x + theBoom.offsetWidth / 2 + 'px';

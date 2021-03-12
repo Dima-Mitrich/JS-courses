@@ -25,9 +25,9 @@ let shootSound = new Audio('sounds/rocketShoot.mp3');
 
 
 window.onload = startDocument;
-/*window.onbeforeunload = function() {
+window.onbeforeunload = function() {
     return false;
-}*/
+}
 backToMenuBtn.onclick = () => { location.hash = 'mainMenu' };
 
 function startDocument() {
@@ -148,7 +148,7 @@ function mainMenu() {
     switchToState({ pagename: 'mainMenu' });
 }
 
-
+//убераем жизнь при промахе или попаданию по злой луне
 function removeUserLife() {
     let lifesArray = lifesDiv.children;
     if (lifesArray.length) {
@@ -159,6 +159,7 @@ function removeUserLife() {
     }
 }
 
+//восстанавливаем жизни
 function usersLifesBack() {
     if (removedLifes) {
         removedLifes.forEach(element => lifesDiv.appendChild(element));

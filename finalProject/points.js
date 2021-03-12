@@ -8,6 +8,7 @@ function Points() {
     self.playerScore = 0;
     let gameZone = bottomBorder.offsetTop / 10;
 
+    //функция появления количества очков при попадании
     self.showPoints = function () {
         let countPoints;
 

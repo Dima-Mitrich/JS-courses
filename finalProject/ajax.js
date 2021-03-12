@@ -19,8 +19,8 @@ function read() {
 
     fetch(ajaxHandlerScript, { method: 'post', body: sp })
         .then(response => response.json())
-        .then(data => { usersArray = JSON.parse(data.result) })
-        .then(() => { createTable() })
+        .then(data => { usersArray = JSON.parse(data.result) }) //кладем в переменную массив с пользователями
+        .then(() => { createTable() }) //и создаем таблицу
         .catch(error => { console.error(error); });
 }
 
@@ -63,14 +63,15 @@ function update(password, newData) {
 }
 
 
+//делаем максимальную длинну массива в 15 игроков и сортируем на месте по количеству очков
 function updateScoreArray(obj) {
     if (usersArray.length > 14) {
-        if (obj.score > usersArray[usersArray.length - 1].score) {
+        if (obj.score > usersArray[usersArray.length - 1].score) {  //сравниваем результат с последним элементом массива и если подходит то добавляем 
             usersArray.push(obj);
             usersArray = usersArray.sort((a, b) => a.score > b.score ? -1 : 1);
-            usersArray.pop();
+            usersArray.pop(); //удаляем последний результат который вытеснил новый
             lockgetAndUpdate(updatePassword, JSON.stringify(usersArray));
-        } else console.log("vash resultat ne popal v tablicu recordov");
+        } else alert("vash resultat ne popal v tablicu recordov");
     }
     else {
         usersArray.push(obj);
