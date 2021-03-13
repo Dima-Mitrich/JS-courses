@@ -25,9 +25,7 @@ let shootSound = new Audio('sounds/rocketShoot.mp3');
 
 
 window.onload = startDocument;
-window.onbeforeunload = function() {
-    return false;
-}
+
 backToMenuBtn.onclick = () => { location.hash = 'mainMenu' };
 
 function startDocument() {
@@ -48,6 +46,9 @@ function gameStart() {
     mainTheme.loop = true;
     mainTheme.volume = 0.5;
     mainTheme.play();
+    window.onbeforeunload = function () {
+        return false;
+    }
 
     if (nameInput.value) playerName = nameInput.value;
     else playerName = 'user';
@@ -98,6 +99,9 @@ function clearScreen() {
     mainTheme.pause();
     mainTheme.currentTime = 0;
     usersLifesBack();
+    window.onbeforeunload = function () {
+        return null;
+    }
 
     if (angryMoons.length) {
         backgroundSpace.querySelectorAll('div.angryMoon').forEach(element => backgroundSpace.removeChild(element));
