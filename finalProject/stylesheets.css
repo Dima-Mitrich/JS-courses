@@ -163,7 +163,7 @@ div#gameOver {
     top: 40%;
     left: 20%;
     width: 60%;
-    height: 200px;
+    height: 50vh;
 }
 
 div#gameOverPicture {
